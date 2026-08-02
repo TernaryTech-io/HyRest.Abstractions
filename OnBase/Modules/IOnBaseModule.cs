@@ -11,8 +11,7 @@ public abstract class OnBaseModule<TApi> : OnBaseModule, IOnBaseModule
     protected OnBaseModule(IOnBaseApp app) : base(app) 
     { 
         
-    }
-    
+    }    
     public override async Task Run(Task<IApiResponse> task, CancellationToken token = default)
     {
         var stopwatch = Stopwatch.StartNew();
@@ -278,11 +277,8 @@ public abstract class OnBaseModule : IOnBaseModule
     protected OnBaseModule(IOnBaseApp app)
     {
         _app = app;
-        _culture = new CultureInfo(App.ClientOptions.DefaultLanguage);
     }
-    private readonly CultureInfo _culture;
     private readonly IOnBaseApp _app;
-    public CultureInfo Culture => _culture;
     public IOnBaseApp App => _app;
     public TApi Api<TApi>() where TApi : IHylandRestAPI
         => App.ClientFactory.CreateClient<TApi>();

@@ -31,7 +31,7 @@ public partial interface IOnBaseAdministrationAPI : IHylandRestAPI
     /// </exception>
     [Headers("Accept: application/json")]
     [Get("/onbase/administration/api/users")]
-    Task<ApiResponse<UserCollectionModel>> UsersGet([Query(CollectionFormat.Multi)] IEnumerable<string> ids, [Query] bool? serviceAccount, [Query] int? limit, [Query] string lastValue, [Query] bool? descendingOrder);
+    Task<ApiResponse<UserCollectionModel>> UsersGet([Query(CollectionFormat.Multi)] IEnumerable<string>? ids = null, [Query] bool? serviceAccount = null, [Query] int? limit = null, [Query] string? lastValue = null, [Query] bool? descendingOrder = true);
 
     /// <summary>Creates a new user.</summary>
     /// <remarks>Creates a new user based on the model that is sent in the request.</remarks>
@@ -95,7 +95,7 @@ public partial interface IOnBaseAdministrationAPI : IHylandRestAPI
     /// </exception>
     [Headers("Accept: application/json")]
     [Get("/onbase/administration/api/users/{userId}")]
-    Task<ApiResponse<UserModel>> UsersGet2(string userId, [Header("X-Custom-Content-Hash")] string x_Custom_Content_Hash);
+    Task<ApiResponse<UserModel>> UsersGet2(string userId, [Header("X-Custom-Content-Hash")] string? x_Custom_Content_Hash = null);
 
     /// <summary>Replace an existing user.</summary>
     /// <remarks>Replace the user with the provided user.</remarks>

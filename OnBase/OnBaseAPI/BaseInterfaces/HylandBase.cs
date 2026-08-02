@@ -10,7 +10,8 @@ public abstract class HylandBase : IHylandBase
 {
     private IDictionary<string, object> _additionalProperties { get; set; } = new Dictionary<string, object>();
 
-    [JsonExtensionData]
+    [JsonIgnore]
+    [JsonExtensionData]    
     public IDictionary<string, object> AdditionalProperties
     {
         get { return _additionalProperties ?? (_additionalProperties = new Dictionary<string, object>()); }

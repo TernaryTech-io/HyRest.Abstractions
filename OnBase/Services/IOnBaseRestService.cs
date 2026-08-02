@@ -18,7 +18,6 @@ public abstract class OnBaseRestService : IOnBaseRestService
     protected OnBaseRestService(IOnBaseModule module)
     {
         _module = module;
-        //_api = module.Api<IHylandRestAPI>();
     }
     private readonly IOnBaseModule _module;
     internal protected virtual IHylandRestAPI Api => _api;

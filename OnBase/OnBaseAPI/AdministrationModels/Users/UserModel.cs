@@ -5,7 +5,7 @@ namespace HyRest.API.Models;
 /// <summary>
 /// An array of user identifiers.
 /// </summary>
-public partial class UserCollectionModel : OnBaseItemTypeCollection<UserModel>
+public partial class UserCollectionModel : OnBaseItemCollection<UserModel>
 {
 
 }
@@ -13,8 +13,15 @@ public partial class UserCollectionModel : OnBaseItemTypeCollection<UserModel>
 /// <summary>
 /// User data.
 /// </summary>
-public partial class UserModel : OnBaseItemType
+public partial class UserModel : OnBaseItem
 {
+    /// <summary>
+    /// The real name of the user.
+    /// </summary>
+    [JsonPropertyName("name")]
+    [System.ComponentModel.DataAnnotations.StringLength(75)]
+    public string Name { get; set; } = "";
+
     /// <summary>
     /// The real name of the user.
     /// </summary>
