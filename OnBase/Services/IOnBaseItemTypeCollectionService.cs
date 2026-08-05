@@ -58,7 +58,8 @@ public abstract class OnBaseItemTypeCollectionService<TApi, TModule, TItem> : On
     }
     protected override async Task<IOnBaseItemTypeService?> GetOne(string identifier)
     {
-        await GetCollection();
+        if(_items.Count == 0)
+            await GetCollection();
         return _items.FirstOrDefault(i => i.Id.ToString() == identifier || i.SystemName == identifier || i.Name == identifier);
     }
 }
@@ -68,18 +69,17 @@ public abstract class OnBaseItemTypeCollectionService<TApi, TModule, TItem> : On
 /// </summary>
 public abstract class OnBaseItemTypeCollectionService : OnBaseRestService, IOnBaseItemTypeCollectionService
 {
-    public OnBaseItemTypeCollectionService(IOnBaseModule module) : base(module) { }
-    
+    public OnBaseItemTypeCollectionService(IOnBaseModule module) : base(module) { }    
     protected abstract Task GetCollection();
     protected abstract Task<IOnBaseItemTypeService?> GetOne(string identifier);
     public virtual IOnBaseItemTypeService? Find(string identifier) 
     {
         if (identifier.StartsWith('-'))
-            return null;
-        var task = GetOne(identifier);
-        task.Wait();
-        if (task.IsCompletedSuccessfully && task.Result != null)
-            return task.Result;
+            return null;        
+        var oneTask = GetOne(identifier);
+        oneTask.Wait();
+        if (oneTask.IsCompletedSuccessfully && oneTask.Result != null)
+            return oneTask.Result;
         return null;
     }
     IOnBaseItemTypeService? IOnBaseItemTypeCollectionService.Find(string identifier)
