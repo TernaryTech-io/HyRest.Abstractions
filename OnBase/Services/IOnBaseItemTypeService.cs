@@ -13,7 +13,7 @@ public abstract class OnBaseItemTypeService<TApi,TModule,TItem> : OnBaseRestServ
     where TModule : class, IOnBaseModule
     where TItem : class, IOnBaseItemType
 {
-    private readonly TItem _item;
+    private TItem _item;
     protected OnBaseItemTypeService(TModule module, TItem item) : base(module) 
     {
         _item = item;
@@ -27,7 +27,11 @@ public abstract class OnBaseItemTypeService<TApi,TModule,TItem> : OnBaseRestServ
     [JsonPropertyOrder(-1)]
     public string SystemName => _item.SystemName ?? string.Empty;
     [JsonIgnore]
-    public virtual IDictionary<string, object> AdditionalProperties { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }    
+    public virtual IDictionary<string, object> AdditionalProperties { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    protected void ReplaceModel(TItem model)
+    {
+        _item = model;
+    }
 }
 
 
