@@ -8,8 +8,7 @@ namespace HyRest;
 /// </summary>
 /// <typeparam name="IHylandRestAPI"></typeparam>
 /// <typeparam name="IOnBaseItemType"></typeparam>
-public abstract class OnBaseItemTypeService<TApi,TModule,TItem> : OnBaseRestService<TApi>, IOnBaseItemTypeService
-    where TApi : IHylandRestAPI
+public abstract class OnBaseItemTypeService<TModule,TItem> : OnBaseRestService, IOnBaseItemTypeService
     where TModule : class, IOnBaseModule
     where TItem : class, IOnBaseItemType
 {
@@ -38,9 +37,8 @@ public abstract class OnBaseItemTypeService<TApi,TModule,TItem> : OnBaseRestServ
 /// <summary>
 /// Base Rest Service interface for Item Types, like DocumentTypes, Keyword Types, etc
 /// </summary>
-public interface IOnBaseItemTypeService : IOnBaseRestService
+public interface IOnBaseItemTypeService : IOnBaseIdentifiable
 {
-    long Id { get; }
     string Name { get; }
     string SystemName { get; }
 }

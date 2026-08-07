@@ -10,8 +10,7 @@ namespace HyRest;
 /// <typeparam name="IHylandRestAPI"></typeparam>
 /// <typeparam name="IOnBaseModule"></typeparam>
 /// <typeparam name="IOnBaseItemService"></typeparam>
-public abstract class OnBaseItemService<TApi,TModule,TItem> : OnBaseRestService<TApi>, IOnBaseItemService
-    where TApi : IHylandRestAPI
+public abstract class OnBaseItemService<TModule,TItem> : OnBaseRestService, IOnBaseItemService
     where TModule : class, IOnBaseModule
     where TItem : class, IOnBaseItem
 {
@@ -23,7 +22,7 @@ public abstract class OnBaseItemService<TApi,TModule,TItem> : OnBaseRestService<
     internal new protected TModule Module => (TModule)base.Module;
     internal protected TItem Item => _item;
     [JsonPropertyOrder(-3)]
-    public virtual long Id => _item.Id.ConvertTo<long>();
+    public long Id => _item.Id.ConvertTo<long>();
     [JsonPropertyName("name")]
     public virtual string? Name { get; }
     [JsonPropertyName("systemName")]
@@ -39,9 +38,8 @@ public abstract class OnBaseItemService<TApi,TModule,TItem> : OnBaseRestService<
 /// <summary>
 /// Base Rest Service interface for Item like Documents, Keywords, Notes.
 /// </summary>
-public interface IOnBaseItemService : IOnBaseRestService
+public interface IOnBaseItemService : IOnBaseIdentifiable
 {
-    long Id { get; }
     string? Name { get; }
     string? SystemName { get; }
 }

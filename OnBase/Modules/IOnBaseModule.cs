@@ -1,28 +1,28 @@
 ﻿using Microsoft.Extensions.Logging;
 using Refit;
 using System.Diagnostics;
-using System.Globalization;
 
 namespace HyRest;
 
-public abstract class OnBaseModule<TApi> : OnBaseModule, IOnBaseModule
-    where TApi : IHylandRestAPI
-{   
-    protected OnBaseModule(IOnBaseApp app) : base(app) 
-    { 
-        
-    }    
-    public override async Task Run(Task<IApiResponse> task, CancellationToken token = default)
+public abstract class OnBaseModule : IOnBaseModule
+{
+    protected OnBaseModule(IOnBaseApp app)
+    {
+        _app = app;
+    }
+    private readonly IOnBaseApp _app;
+    public IOnBaseApp App => _app;
+    public async Task Run<TApi>(Func<TApi,CancellationToken,Task<IApiResponse>> function, CancellationToken token = default)
+        where TApi : IHylandRestAPI
     {
         var stopwatch = Stopwatch.StartNew();
-        IApiResponse? res = null;
-
-#pragma warning disable CS0168 // Variable is declared but never used
+        IApiResponse? res = null;        
+        #pragma warning disable CS0168 // Variable is declared but never used
         try
         {
             App.Logger.LogDebug("Starting API request for Task");
-
-            res = await task.WaitAsync(token);
+            var api = App.ClientFactory.CreateClient<TApi>();
+            res = await function(api,token);
             stopwatch.Stop();
 
             // Log request details at trace level
@@ -115,20 +115,21 @@ public abstract class OnBaseModule<TApi> : OnBaseModule, IOnBaseModule
                 ex.Message);
             throw;
         }
-#pragma warning restore CS0168 // Variable is declared but never used
+        #pragma warning restore CS0168 // Variable is declared but never used
         throw new Exception("Shouldn't make it this far");
     }
-    public override async Task<T?> Run<T>(Task<ApiResponse<T>> task, CancellationToken token = default)
-        where T : class
+    public async Task<TOut?> Run<TApi,TOut>(Func<TApi, CancellationToken,Task<ApiResponse<TOut>>> function, CancellationToken token = default)
+        where TApi : IHylandRestAPI
+        where TOut : class, IHylandBase
     {
         var stopwatch = Stopwatch.StartNew();
-        ApiResponse<T>? res = null;
+        ApiResponse<TOut>? res = null;
 
         try
         {
-            App.Logger.LogDebug("Starting API request for {TaskType}", typeof(T).Name);
-
-            res = await task.WaitAsync(token);
+            App.Logger.LogDebug("Starting API request for {TaskType}", typeof(TOut).Name);
+            var api = App.ClientFactory.CreateClient<TApi>();
+            res = await function(api, token);
             stopwatch.Stop();
 
             // Log request details at trace level
@@ -143,7 +144,7 @@ public abstract class OnBaseModule<TApi> : OnBaseModule, IOnBaseModule
                 App.Logger.LogDebug(
                     "API request succeeded - Status: {StatusCode}, Type: {ResponseType}, Duration: {Duration}ms",
                     (int)res.StatusCode,
-                    typeof(T).Name,
+                    typeof(TOut).Name,
                     stopwatch.ElapsedMilliseconds);
 
                 // Log response headers at trace level
@@ -218,7 +219,7 @@ public abstract class OnBaseModule<TApi> : OnBaseModule, IOnBaseModule
             App.Logger.LogWarning(
                 "API request cancelled: {message} - Type: {ResponseType}, Duration: {Duration}ms",
                 ex.Message,
-                typeof(T).Name,
+                typeof(TOut).Name,
                 stopwatch.ElapsedMilliseconds);
             throw;
         }
@@ -228,7 +229,7 @@ public abstract class OnBaseModule<TApi> : OnBaseModule, IOnBaseModule
             App.Logger.LogError(
                 ex,
                 "API request timed out - Type: {ResponseType}, Duration: {Duration}ms, Message: {Message}",
-                typeof(T).Name,
+                typeof(TOut).Name,
                 stopwatch.ElapsedMilliseconds,
                 ex.Message);
             throw;
@@ -240,7 +241,7 @@ public abstract class OnBaseModule<TApi> : OnBaseModule, IOnBaseModule
                 ex,
                 "API request error - Status: {StatusCode}, Type: {ResponseType}, URL: {RequestUri}, Duration: {Duration}ms, Content: {Content}",
                 (int)ex.StatusCode,
-                typeof(T).Name,
+                typeof(TOut).Name,
                 ex.RequestMessage?.RequestUri,
                 stopwatch.ElapsedMilliseconds,
                 ex.Content);
@@ -252,7 +253,7 @@ public abstract class OnBaseModule<TApi> : OnBaseModule, IOnBaseModule
             App.Logger.LogError(
                 ex,
                 "Unexpected error during API request - Type: {ResponseType}, Duration: {Duration}ms, Message: {Message}",
-                typeof(T).Name,
+                typeof(TOut).Name,
                 stopwatch.ElapsedMilliseconds,
                 ex.Message);
             throw;
@@ -264,7 +265,6 @@ public abstract class OnBaseModule<TApi> : OnBaseModule, IOnBaseModule
         if(response.Headers != null && response.Headers.Any(h => h.Key == "Set-Cookie"))
         {
             var setcookies = response.Headers.Where(h => h.Key == "Set-Cookie");   
-            //Otherwise handled by OpenIdConnect?
             if(App.ClientFactory.CookieContainer != null)
                 App.ClientFactory.CookieContainer.SetCookies(new Uri(App.ClientOptions.ApiBaseUrl), setcookies.First().Value.First());
         }
@@ -272,34 +272,15 @@ public abstract class OnBaseModule<TApi> : OnBaseModule, IOnBaseModule
     }
 }
 
-public abstract class OnBaseModule : IOnBaseModule
-{    
-    protected OnBaseModule(IOnBaseApp app)
-    {
-        _app = app;
-    }
-    private readonly IOnBaseApp _app;
-    public IOnBaseApp App => _app;
-    public TApi Api<TApi>() where TApi : IHylandRestAPI
-        => App.ClientFactory.CreateClient<TApi>();
-    public abstract Task<T?> Run<T>(Task<ApiResponse<T>> task, CancellationToken token = default)
-        where T : class, IHylandBase;
-    public abstract Task Run(Task<IApiResponse> task, CancellationToken token = default);    
-}
-
-//public interface IOnBaseModule<TApi> : IOnBaseModule
-//    where TApi : IHylandRestAPI
-//{
-//    TApi Api { get; } 
-//}
 /// <summary>
 /// Represents the base OnBase module, for Document Management, WorkView, etc
 /// </summary>
 public interface IOnBaseModule
 {
     IOnBaseApp App { get; }
-    TApi Api<TApi>() where TApi : IHylandRestAPI;
-    Task<T?> Run<T>(Task<ApiResponse<T>> task, CancellationToken token = default)
-        where T : class, IHylandBase;
-    Task Run(Task<IApiResponse> task, CancellationToken token = default);
+    Task<TOut?> Run<TApi,TOut>(Func<TApi,CancellationToken,Task<ApiResponse<TOut>>> function, CancellationToken token = default)
+        where TApi : IHylandRestAPI
+        where TOut : class, IHylandBase;
+    Task Run<TApi>(Func<TApi, CancellationToken,Task<IApiResponse>> function, CancellationToken token = default)
+        where TApi : IHylandRestAPI;
 }

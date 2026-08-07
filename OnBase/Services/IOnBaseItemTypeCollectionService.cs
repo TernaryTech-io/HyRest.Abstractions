@@ -8,19 +8,16 @@ namespace HyRest;
 /// </summary>
 /// <typeparam name="IHylandRestAPI"></typeparam>
 /// <typeparam name="IOnBaseItemTypeService"></typeparam>
-public abstract class OnBaseItemTypeCollectionService<TApi, TModule, TItem> : OnBaseItemTypeCollectionService, IReadOnlyCollection<TItem>
-    where TApi : IHylandRestAPI
+public abstract class OnBaseItemTypeCollectionService<TModule, TItem> : OnBaseItemTypeCollectionService, IReadOnlyCollection<TItem>
     where TModule : class, IOnBaseModule
     where TItem : class, IOnBaseItemTypeService
 {
-    private TApi _api { get => (TApi)base.Api; set => base.SetApi(value); }
     public OnBaseItemTypeCollectionService(IOnBaseModule module) : base(module)
     {
-        _api = module.Api<TApi>();
+        
     }
     internal protected new TModule Module => (TModule)base.Module;
     internal protected List<TItem> _items { get; set;  } = new List<TItem>();
-    internal new protected TApi Api => _api;
     public int Count => _items.Count;
     internal protected void Add(TItem item) => _items.Add(item);
     public bool HasItem(long id) => _items.Any(i => i.Id == id);
