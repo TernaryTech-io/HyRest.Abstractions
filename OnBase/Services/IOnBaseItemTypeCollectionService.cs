@@ -1,5 +1,6 @@
 ﻿
 using System.Collections;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace HyRest;
 
@@ -8,13 +9,13 @@ namespace HyRest;
 /// </summary>
 /// <typeparam name="IHylandRestAPI"></typeparam>
 /// <typeparam name="IOnBaseItemTypeService"></typeparam>
-public abstract class OnBaseItemTypeCollectionService<TModule, TItem> : OnBaseItemTypeCollectionService, IReadOnlyCollection<TItem>
+public abstract class OnBaseItemTypeCollectionService<TModule, TItem> : OnBaseRestService, IOnBaseItemTypeCollectionService, IReadOnlyCollection<TItem>
     where TModule : class, IOnBaseModule
     where TItem : class, IOnBaseItemTypeService
 {
     public OnBaseItemTypeCollectionService(IOnBaseModule module) : base(module)
     {
-        
+        GetCollection();
     }
     internal protected new TModule Module => (TModule)base.Module;
     internal protected List<TItem> _items { get; set;  } = new List<TItem>();
@@ -34,50 +35,63 @@ public abstract class OnBaseItemTypeCollectionService<TModule, TItem> : OnBaseIt
     /// </summary>
     /// <param name="Identifier">Can be Id, Name or System Name</param>
     /// <returns></returns>
-    public new TItem? Find(string Identifier) => (TItem?)base.Find(Identifier);
-    
-    public IReadOnlyCollection<TItem> GetAll()
+    public TItem? Find(string identifier)
     {
-        GetCollection().Wait();
-        return _items.ToList();
+        TItem? result = null;
+        //Check Cache Service
+
+        if (_items.Count > 0)
+        {
+            result = _items.FirstOrDefault(i => i.Id.ToString() == identifier || i.Name == identifier || i.SystemName == identifier);
+        }
+        if (result == null)
+        {
+            var findOneTask = FindOne(identifier);            
+            if (findOneTask.Wait(Module.App.ClientOptions.RequestTimeOut) && findOneTask.IsCompletedSuccessfully)
+                result = findOneTask.Result;
+        }
+        return result;
     }
     IEnumerator<TItem> IEnumerable<TItem>.GetEnumerator()
     {
         if (_items.Count == 0)
-            GetCollection().Wait();
+            GetCollection().Wait(Module.App.ClientOptions.RequestTimeOut);
         return _items.GetEnumerator();
     }
     public IEnumerator GetEnumerator()
     {
         if (_items.Count == 0)
-            GetCollection().Wait();
+            GetCollection().Wait(Module.App.ClientOptions.RequestTimeOut);
         return _items.GetEnumerator();
     }
-    protected override async Task<IOnBaseItemTypeService?> GetOne(string identifier)
+    protected virtual async Task GetCollection(CancellationToken token = default)
     {
-        if(_items.Count == 0)
-            await GetCollection();
-        return _items.FirstOrDefault(i => i.Id.ToString() == identifier || i.SystemName == identifier || i.Name == identifier);
+        _items.ForEach(async i =>
+        {
+            Module.App.Cache.SetAsync(i, token);
+        });
     }
-}
-
-/// <summary>
-/// Represents the base abstract class for retrieving collections of items.
-/// </summary>
-public abstract class OnBaseItemTypeCollectionService : OnBaseRestService, IOnBaseItemTypeCollectionService
-{
-    public OnBaseItemTypeCollectionService(IOnBaseModule module) : base(module) { }    
-    protected abstract Task GetCollection();
-    protected abstract Task<IOnBaseItemTypeService?> GetOne(string identifier);
-    public virtual IOnBaseItemTypeService? Find(string identifier) 
+    protected virtual async Task<TItem?> GetOne(long id, CancellationToken token = default)
     {
-        if (identifier.StartsWith('-'))
-            return null;        
-        var oneTask = GetOne(identifier);
-        oneTask.Wait();
-        if (oneTask.IsCompletedSuccessfully && oneTask.Result != null)
-            return oneTask.Result;
-        return null;
+        var item = await Module.App.Cache.GetOrCreateAsync<TItem>(id, null, token);
+        if (item != null)
+            return item;
+        if (_items.Count == 0)
+            await GetCollection();
+        item = _items.FirstOrDefault(i => i.Id == id);
+        if (item != null)
+            Module.App.Cache.SetAsync(item, token);
+        return item;
+    }
+    protected virtual async Task<TItem?> FindOne(string identifier, CancellationToken token = default)
+    {
+        if (long.TryParse(identifier, out long id))
+        {
+            return await GetOne(id, token);
+        }
+        if (_items.Count == 0)
+            await GetCollection();
+        return _items.FirstOrDefault(i => i.Name == identifier || i.SystemName == identifier);
     }
     IOnBaseItemTypeService? IOnBaseItemTypeCollectionService.Find(string identifier)
      => Find(identifier);

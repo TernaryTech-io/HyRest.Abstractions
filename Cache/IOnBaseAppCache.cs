@@ -1,22 +1,28 @@
 ﻿namespace HyRest.Cache;
 
-public interface IOnBaseAppCache<T> where T : class, IOnBaseIdentifiable
+public interface IOnBaseAppCache
 {
-    Task<T?> GetOrCreateAsync(string id, Func<CancellationToken, ValueTask<T>> factory, CancellationToken ct = default);
-    public T? GetOrCreate(string id, Func<CancellationToken, ValueTask<T>> factory, CancellationToken ct = default)
+    Task<T?> GetOrCreateAsync<T>(string id, Func<CancellationToken, ValueTask<T>> factory, CancellationToken ct = default)
+        where T : class, IOnBaseIdentifiable;
+    public T? GetOrCreate<T>(string id, Func<CancellationToken, ValueTask<T>> factory, CancellationToken ct = default)
+        where T : class, IOnBaseIdentifiable
     {
         var task = GetOrCreateAsync(id, factory, ct);
         task.Wait();
         return task.Result;
     }
-    public Task<T?> GetOrCreateAsync(long id, Func<CancellationToken, ValueTask<T>> factory, CancellationToken ct = default)
+    public Task<T?> GetOrCreateAsync<T>(long id, Func<CancellationToken, ValueTask<T>> factory, CancellationToken ct = default)
+        where T : class, IOnBaseIdentifiable
         => GetOrCreateAsync(id.ToString(), factory, ct);
-    public T? GetOrCreate(long id, Func<CancellationToken, ValueTask<T>> factory, CancellationToken ct = default)
-     => GetOrCreate(id.ToString(), factory, ct);
-    Task SetAsync(T item, CancellationToken ct = default);
-    public void Set(T item,  CancellationToken ct = default)
+    public T? GetOrCreate<T>(long id, Func<CancellationToken, ValueTask<T>> factory, CancellationToken ct = default)
+        where T : class, IOnBaseIdentifiable
+        => GetOrCreate(id.ToString(), factory, ct);
+    Task SetAsync<T>(T item, CancellationToken ct = default)
+        where T : class, IOnBaseIdentifiable;
+    public void Set<T>(T item,  CancellationToken ct = default) where T : class, IOnBaseIdentifiable
         => SetAsync(item, ct).Wait();
-    Task RemoveAsync(T item, CancellationToken ct = default);
-    public void Remove(T item, CancellationToken ct = default)
+    Task RemoveAsync<T>(T item, CancellationToken ct = default)
+        where T : class, IOnBaseIdentifiable;
+    public void Remove<T>(T item, CancellationToken ct = default) where T : class, IOnBaseIdentifiable
         => RemoveAsync(item, ct).Wait();
 }

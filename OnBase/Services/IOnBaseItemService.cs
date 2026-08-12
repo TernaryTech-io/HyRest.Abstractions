@@ -22,16 +22,18 @@ public abstract class OnBaseItemService<TModule,TItem> : OnBaseRestService, IOnB
     internal new protected TModule Module => (TModule)base.Module;
     internal protected TItem Item => _item;
     [JsonPropertyOrder(-3)]
-    public long Id => _item.Id.ConvertTo<long>();
+    public virtual long Id => _item.Id.ConvertTo<long>();
     [JsonPropertyName("name")]
     public virtual string? Name { get; }
     [JsonPropertyName("systemName")]
     public virtual string? SystemName { get; }
+    public virtual string? TypeId { get; }
     [JsonIgnore]
     public virtual IDictionary<string, object> AdditionalProperties { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    protected void ReplaceModel(TItem model)
+    protected void ReplaceModel(TItem? model)
     {
-        _item = model;
+        if(model != null)
+            _item = model;
     }
 }
 
@@ -42,4 +44,5 @@ public interface IOnBaseItemService : IOnBaseIdentifiable
 {
     string? Name { get; }
     string? SystemName { get; }
+    string? TypeId { get; }
 }

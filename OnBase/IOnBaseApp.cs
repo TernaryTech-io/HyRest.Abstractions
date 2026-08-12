@@ -1,7 +1,9 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using HyRest.Administration;
+using HyRest.Cache;
 using HyRest.CaseManagement;
 using HyRest.Session;
-using HyRest.Administration;
+using Microsoft.Extensions.Logging;
+using System.Globalization;
 
 namespace HyRest;
 
@@ -11,6 +13,7 @@ public abstract class OnBaseAppBase : IOnBaseApp
     public abstract IHylandClientFactory ClientFactory { get; }
     public abstract IHylandClientOptions ClientOptions { get; }
     public abstract ILogger<IOnBaseApp> Logger { get; }
+    public virtual IOnBaseAppCache Cache { get; }
     public virtual IOnBaseSession Session { get; protected set; }
     public virtual IOnBaseCore Core { get; protected set; }
     public virtual IOnBaseWorkView WorkView { get; protected set; }
@@ -20,6 +23,8 @@ public abstract class OnBaseAppBase : IOnBaseApp
 
 public interface IOnBaseApp
 {
+    public TimeSpan RequestTimeOut => TimeSpan.FromSeconds(ClientOptions.RequestTimeOut);
+    IOnBaseAppCache Cache { get; }
     IHylandClientFactory ClientFactory { get; }
     IHylandClientOptions ClientOptions { get; }
     ILogger<IOnBaseApp> Logger { get; }

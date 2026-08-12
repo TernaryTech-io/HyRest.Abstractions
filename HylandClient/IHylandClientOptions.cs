@@ -9,4 +9,5 @@ public interface IHylandClientOptions
     string ApiBaseUrl { get; set; }
     bool UseQueryMetering { get; set; }
     string DefaultLanguage { get; set; }
+    int RequestTimeOut { get; set; }
 }

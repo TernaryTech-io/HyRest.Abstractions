@@ -17,7 +17,7 @@ public partial class KeywordDatasetCollectionModel : HylandBase
     /// An array of keyword data set.
     /// </summary>
     [JsonPropertyName("items")]
-    public ICollection<KeywordDatasetValueModel> Items { get; set; }
+    public ICollection<KeywordDatasetValueModel> Items { get; set; } = [];
 }
 
 public partial class KeywordDatasetValueModel : HylandBase

@@ -12,15 +12,12 @@ public abstract class OnBaseItemCollectionService<TModule, TItem> : OnBaseRestSe
     where TModule : class, IOnBaseModule
     where TItem : class, IOnBaseItemService
 {
-    private IOnBaseAppCache<TItem?> _cache;
-    protected OnBaseItemCollectionService(TModule module, IOnBaseAppCache<TItem> cache) : base(module)
-    {
-        _cache = cache;
+    protected OnBaseItemCollectionService(TModule module) : base(module)
+    {        
         GetCollection();
     }
     internal protected new TModule Module => (TModule)base.Module;
     internal protected List<TItem> _items { get; set; } = new List<TItem>();
-    internal protected IOnBaseAppCache<TItem?> Cache => _cache;
     public int Count => _items.Count;
     internal protected void Add(TItem item) => _items.Add(item);
     public bool HasItem(long id) => _items.Any(i => i.Id == id);
@@ -39,41 +36,63 @@ public abstract class OnBaseItemCollectionService<TModule, TItem> : OnBaseRestSe
     /// <returns></returns>
     public TItem? Find(string identifier)
     {
-        if (_items.Count == 0)
-            GetCollection().Wait();
-        TItem? result = _items.FirstOrDefault(i => i.Id.ToString() == identifier || i.Name == identifier || i.SystemName == identifier);
+        TItem? result = null;
+        //Check Cache Service
+
+        if (_items.Count > 0)
+        {
+            result = _items.FirstOrDefault(i => i.Id.ToString() == identifier || i.Name == identifier || i.SystemName == identifier);
+        }         
         if(result == null)
         {
             var findOneTask = FindOne(identifier);
-            findOneTask.Wait();
-            if (findOneTask.IsCompletedSuccessfully)
+            
+            if (findOneTask.Wait(Module.App.ClientOptions.RequestTimeOut) && findOneTask.IsCompletedSuccessfully)
                 result = findOneTask.Result;
-        }              
-        if (result != null)
-        {
-            var getOneTask = GetOne(result.Id.ToString());
-            getOneTask.Wait();
-            if (getOneTask.IsCompletedSuccessfully)
-                result = getOneTask.Result;
-        }
-        
+        }                      
         return result;
     }
     IEnumerator<TItem> IEnumerable<TItem>.GetEnumerator()
     {
         if (_items.Count == 0)
-            GetCollection().Wait();
+            GetCollection().Wait(Module.App.ClientOptions.RequestTimeOut);
         return _items.GetEnumerator();
     }
     public IEnumerator GetEnumerator()
     {
         if (_items.Count == 0)
-            GetCollection().Wait();
+            GetCollection().Wait(Module.App.ClientOptions.RequestTimeOut);
         return _items.GetEnumerator();
     }
-    protected abstract Task GetCollection(CancellationToken token = default);
-    protected abstract Task<TItem?> GetOne(string identifier, CancellationToken token = default);
-    protected abstract Task<TItem?> FindOne(string identifier, CancellationToken token = default);
+    protected virtual async Task GetCollection(CancellationToken token = default)
+    {
+        _items.ForEach(async i =>
+        {
+            Module.App.Cache.SetAsync(i, token);
+        });
+    }
+    protected virtual async Task<TItem?> GetOne(long id, CancellationToken token = default)
+    {
+        var item = await Module.App.Cache.GetOrCreateAsync<TItem>(id, null, token);
+        if (item != null)
+            return item;
+        if (_items.Count == 0)
+            await GetCollection();
+        item = _items.FirstOrDefault(i => i.Id == id);
+        if (item != null)
+            Module.App.Cache.SetAsync(item, token);
+        return item;
+    }
+    protected virtual async Task<TItem?> FindOne(string identifier, CancellationToken token = default)
+    {
+        if(long.TryParse(identifier, out long id))
+        {
+            return await GetOne(id, token);
+        }
+        if (_items.Count == 0)
+            await GetCollection();
+        return _items.FirstOrDefault(i => i.Name == identifier || i.SystemName == identifier);
+    }
     IOnBaseItemService? IOnBaseItemCollectionService.Find(string identifier)
      => Find(identifier);
 }
