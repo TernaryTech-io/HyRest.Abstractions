@@ -12,7 +12,7 @@ public abstract class OnBaseItemType : HylandBase, IOnBaseItemType
     /// The unique identifier of the object.
     /// </summary>
     [JsonPropertyName("id")]
-    public virtual string Id { get; set; }
+    public virtual string? Id { get; set; }
     /// <summary>
     /// The localized name of the object
     /// </summary>

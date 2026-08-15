@@ -5,7 +5,7 @@ namespace HyRest.OnBase;
 
 public interface IOnBaseCacheable : IHylandBase
 {
-    string Id { get; set; }
+    string? Id { get; set; }
     string? Name { get; set; }
     string? SystemName { get; set; }
 }
