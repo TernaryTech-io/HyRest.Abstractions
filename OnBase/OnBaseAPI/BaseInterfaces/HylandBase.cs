@@ -1,7 +1,14 @@
-﻿using System.Text.Json.Serialization;
+﻿using Refit;
+using System.Text.Json.Serialization;
 
-namespace HyRest;
+namespace HyRest.OnBase;
 
+public interface IOnBaseCacheable : IHylandBase
+{
+    string Id { get; set; }
+    string? Name { get; set; }
+    string? SystemName { get; set; }
+}
 
 /// <summary>
 /// Base abstract class for all Items including Model's

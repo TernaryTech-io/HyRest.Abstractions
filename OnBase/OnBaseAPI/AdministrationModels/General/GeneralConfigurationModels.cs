@@ -39,7 +39,7 @@ public partial class GeneralSettingsModel : HylandBase
     /// Custom Query Configuration Types.
     /// </summary>
     [JsonPropertyName("customQueryConfiguration")]
-    public GeneralSettingsCustomQueryConfiguration CustomQueryConfiguration { get; set; }
+    public GeneralSettingsApplicationConfiguration ApplicationConfiguration { get; set; }
 
     [JsonPropertyName("processConfiguration")]
     public bool ProcessConfiguration { get; set; } = false;
@@ -90,7 +90,7 @@ public partial class ConfigurationRightsModel : HylandBase
     /// <br/>Only types that enforce User Group security: Access to the By Keyword and Custom Written SQL Custom Query Types.
     /// </summary>
     [JsonPropertyName("customQueryConfiguration")]
-    public ConfigurationRightsCustomQueryConfiguration CustomQueryConfiguration { get; set; }
+    public ConfigurationRightsApplicationConfiguration ApplicationConfiguration { get; set; }
 
     /// <summary>
     /// Access to Procssing configuration and Import.

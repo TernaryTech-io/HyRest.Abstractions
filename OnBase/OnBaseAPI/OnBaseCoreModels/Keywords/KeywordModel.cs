@@ -9,7 +9,7 @@ public class KeywordModel : OnBaseItem
     /// The unique identifier of the keyword type for this keyword value.
     /// </summary>
     [JsonPropertyName("typeId")]
-    public override string Id { get => base.Id; set => base.Id = value; }
+    public override string Id { get; set; }
     /// <summary>
     /// A List of keyword values that contain various formats of the keyword
     /// <br/>value.
@@ -20,7 +20,11 @@ public class KeywordModel : OnBaseItem
 public partial class KeywordValueModel : OnBaseItem
 {
     [JsonIgnore]
-    private new string Id { get; set; } = string.Empty;
+    public override string Id { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    [JsonIgnore]
+    public override string? Name { get => string.Empty; set => base.Name = string.Empty; }
+    [JsonIgnore]
+    public override string? SystemName { get => string.Empty; set => base.Name = string.Empty; }
     /// <summary>
     /// Depending on the underlying keyword type datatype, the specific
     /// <br/>format of the underlying string adheres to the following formatting

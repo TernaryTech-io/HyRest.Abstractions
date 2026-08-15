@@ -6,18 +6,15 @@ namespace HyRest.API.Models;
 /// <summary>
 /// A collection of LockInfo objects.
 /// </summary>
-public partial class LockInfoCollectionModel : OnBaseItemCollection<LockInfoModel>
+public partial class LockInfoCollectionModel : OnBaseBaseCollection<LockInfoModel>
 {
 
 }
 /// <summary>
 /// Information on a lock that has been put on an item.
 /// </summary>
-public partial class LockInfoModel : OnBaseItem
+public partial class LockInfoModel : OnBaseBase
 {
-    [JsonIgnore]
-    private new string Id { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
     /// <summary>
     /// A unique identifier of the user that holds the lock on this item.
     /// </summary>

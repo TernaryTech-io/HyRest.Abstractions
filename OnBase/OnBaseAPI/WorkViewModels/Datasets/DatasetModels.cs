@@ -32,7 +32,7 @@ public partial class DataSetModel : HylandBase
 /// <summary>
 /// A collection of Data Set Values.
 /// </summary>
-public partial class DataSetValueCollectionModel : HylandBase
+public partial class DataSetValueCollectionModel : OnBaseBaseCollection<DataSetValueModel>
 {
     /// <summary>
     /// True when result set exceeds maximum results requested. No results are returned when hasExceededMaxResults is true.
@@ -45,15 +45,12 @@ public partial class DataSetValueCollectionModel : HylandBase
     /// </summary>
     [JsonPropertyName("maximumResultsAllowed")]
     public int MaximumResultsAllowed { get; set; }
-
-    [JsonPropertyName("items")]
-    public ICollection<DataSetValueModel> Items { get; set; } 
 }
 
 /// <summary>
 /// Contains a display value and a backing value for a specified Data Set.
 /// </summary>
-public partial class DataSetValueModel : HylandBase
+public partial class DataSetValueModel : OnBaseBase
 {
 
     /// <summary>

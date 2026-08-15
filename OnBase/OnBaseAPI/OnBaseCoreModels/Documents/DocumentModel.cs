@@ -14,12 +14,7 @@ public partial class DocumentCollectionModel : OnBaseItemCollection<DocumentMode
 /// Document metadata.
 /// </summary>    
 public partial class DocumentModel : OnBaseItem
-{
-    /// <summary>
-    /// The document name calculated by the Autoname string.
-    /// </summary>
-    [JsonPropertyName("name")]
-    public string? Name { get; set; }
+{    
     /// <summary>
     /// The id of the Document Type for this document.
     /// </summary>
@@ -95,7 +90,8 @@ public partial class CaptureProperties : HylandBase
 /// </summary>
 public partial class DocumentsPostResponse : OnBaseItem
 {
-
+    [JsonIgnore]
+    public override string Id { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 }
 
 /// <summary>
@@ -116,6 +112,10 @@ public partial class MatchedDocumentCollectionResponseModel : OnBaseItemCollecti
 /// </summary>
 public partial class MatchedDocumentModel : OnBaseItem
 {
+    [JsonIgnore]
+    public override string? Name { get => string.Empty; set => base.Name = string.Empty; }
+    [JsonIgnore]
+    public override string? SystemName { get => string.Empty; set => base.Name = string.Empty; }
     /// <summary>
     /// Boolean indicating if the document can be added as a revision.
     /// <br/>To add the document as a new revision, a POST request to '/documents/{id}/revisions' must me made.

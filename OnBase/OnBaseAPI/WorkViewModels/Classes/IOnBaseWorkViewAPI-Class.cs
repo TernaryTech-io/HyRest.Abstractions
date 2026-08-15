@@ -1,6 +1,6 @@
 ﻿using Refit;
 
-namespace HyRest.CaseManagement;
+namespace HyRest.API.Models;
 
 public partial interface IOnBaseWorkViewAPI : IHylandRestAPI
 {
@@ -123,7 +123,7 @@ public partial interface IOnBaseWorkViewAPI : IHylandRestAPI
     /// </exception>
     [Headers("Accept: application/json")]
     [Get("/onbase/workview/classes/{classId}/filters")]
-    Task<ApiResponse<FilterTypeCollectionModel>> FiltersGet(string classId, [Header("Accept-Language")] string accept_Language = "en-US");
+    Task<ApiResponse<FilterCollectionModel>> FiltersGet(string classId, [Header("Accept-Language")] string accept_Language = "en-US");
 
     /// <summary>Creates an Object for the specified Class with the provided Attribute values.</summary>
     /// <param name="classId">Id of a Class.</param>

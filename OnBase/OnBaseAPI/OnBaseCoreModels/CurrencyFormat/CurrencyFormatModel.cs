@@ -49,7 +49,7 @@ public partial class CurrencyFormatModel : OnBaseItemType
     /// The ISO name for the currency format if one exists.
     /// </summary>
     [JsonPropertyName("isoCurrencyName")]
-    public string? IsoCurrencyName { get; set; }
+    public override string? SystemName { get; set; }
 
     /// <summary>
     /// A value indicating whether the format allows for a currency symbols.

@@ -287,8 +287,8 @@ public partial class Products
     [JsonPropertyName("combinedViewerAutoFillKeywordSet")]
     public bool CombinedViewerAutoFillKeywordSet { get; set; } = false;
 
-    [JsonPropertyName("combinedViewerCustomQueryType")]
-    public bool CombinedViewerCustomQueryType { get; set; } = false;
+    [JsonPropertyName("combinedViewerApplicationType")]
+    public bool CombinedViewerApplicationType { get; set; } = false;
 
     [JsonPropertyName("combinedViewerDocumentType")]
     public bool CombinedViewerDocumentType { get; set; } = false;

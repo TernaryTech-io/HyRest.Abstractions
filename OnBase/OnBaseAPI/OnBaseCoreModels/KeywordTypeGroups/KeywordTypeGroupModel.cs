@@ -34,37 +34,33 @@ public partial class KeywordOptionsModel : HylandBase
     /// An array of required keyword type ids for a document to be stored.
     /// </summary>
     [JsonPropertyName("requiredForArchivalKeywordTypeIds")]
-    public ICollection<string> RequiredForArchivalKeywordTypeIds { get; set; }
+    public ICollection<string> RequiredForArchivalKeywordTypeIds { get; set; } = [];
 
     /// <summary>
     /// An array of required keyword type ids for a document to be retrieved.
     /// </summary>
     [JsonPropertyName("requiredForRetrievalKeywordTypeIds")]
-    public ICollection<string> RequiredForRetrievalKeywordTypeIds { get; set; }
+    public ICollection<string> RequiredForRetrievalKeywordTypeIds { get; set; } = [];
 
     /// <summary>
     /// An array of read only keyword type ids for a document type.
     /// </summary>
     [JsonPropertyName("readOnlyKeywordTypeIds")]
-    public ICollection<string> ReadOnlyKeywordTypeIds { get; set; }
+    public ICollection<string> ReadOnlyKeywordTypeIds { get; set; } = [];
 }
 
 /// <summary>
 /// An array of keyword type group, document type assignments.
 /// </summary>
-public partial class DocumentTypeKeywordTypeGroupAssignmentCollection : HylandBase
+public partial class DocumentTypeKeywordTypeGroupAssignmentCollection : OnBaseBaseCollection<KeywordTypeGroupDocumentTypeAssignment>
 {
-    /// <summary>
-    /// An array of keyword type group, document type assignments.
-    /// </summary>
-    [JsonPropertyName("items")]
-    public ICollection<KeywordTypeGroupDocumentTypeAssignment> Items { get; set; }
+
 }
 
 /// <summary>
 /// An assignment of a document type to a keyword type group.
 /// </summary>    
-public partial class KeywordTypeGroupDocumentTypeAssignment : HylandBase
+public partial class KeywordTypeGroupDocumentTypeAssignment : OnBaseBase
 {
 
     /// <summary>
@@ -85,34 +81,24 @@ public partial class KeywordTypeGroupDocumentTypeAssignment : HylandBase
 /// <summary>
 /// An array of keyword types on a keyword type groups.
 /// </summary>    
-public partial class KeywordTypeKeywordTypeGroupsCollectionRetrieval : HylandBase
+public partial class KeywordTypeKeywordTypeGroupsCollectionRetrieval : OnBaseBaseCollection<KeywordTypeKeywordTypeGroupRetrieval>
 {
-
-    /// <summary>
-    /// An array of keyword types on a keyword type groups.
-    /// </summary>
-    [JsonPropertyName("items")]
-    public ICollection<KeywordTypeKeywordTypeGroupRetrieval> Items { get; set; }
+        
 }
 
 /// <summary>
 /// An array of keyword types on a keyword type groups.
 /// </summary>    
-public partial class KeywordTypeKeywordTypeGroupCollectionAssignment : HylandBase
+public partial class KeywordTypeKeywordTypeGroupCollectionAssignment : OnBaseBaseCollection<KeywordTypeKeywordTypeGroupAssignment>
 {
 
-    /// <summary>
-    /// An array of keyword types on a keyword type groups.
-    /// </summary>
-    [JsonPropertyName("items")]
-    public ICollection<KeywordTypeKeywordTypeGroupAssignment> Items { get; set; }
 }
 
 /// <summary>
 /// Keyword Type metadata.
 /// </summary>
 
-public partial class KeywordTypeKeywordTypeGroupRetrieval : HylandBase
+public partial class KeywordTypeKeywordTypeGroupRetrieval : OnBaseBase
 {
     /// <summary>
     /// The unique identifier for the keyword type.
@@ -137,9 +123,8 @@ public partial class KeywordTypeKeywordTypeGroupRetrieval : HylandBase
 /// Keyword Type metadata.
 /// </summary>
 
-public partial class KeywordTypeKeywordTypeGroupAssignment : HylandBase
+public partial class KeywordTypeKeywordTypeGroupAssignment : OnBaseBase
 {
-
     /// <summary>
     /// The unique identifier for keyword type group.
     /// </summary>

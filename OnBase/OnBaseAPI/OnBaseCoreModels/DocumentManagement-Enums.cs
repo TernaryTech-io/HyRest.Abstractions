@@ -39,7 +39,7 @@ public enum Fit
 public enum QueryType
 {
 
-    [System.Runtime.Serialization.EnumMember(Value = @"CustomQuery")]
+    [System.Runtime.Serialization.EnumMember(Value = @"Application")]
     CustomQuery = 0,
 
     [System.Runtime.Serialization.EnumMember(Value = @"DocumentType")]

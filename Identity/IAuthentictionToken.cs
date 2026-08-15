@@ -1,7 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
 namespace HyRest.Identity;
-
 public interface IAuthenticationToken
 {
     string AccessToken { get; set; }

@@ -20,11 +20,11 @@ public abstract class OnBaseItemTypeService<TModule,TItem> : OnBaseRestService, 
     internal protected new TModule Module => (TModule)base.Module;
     internal protected TItem Item => _item;
     [JsonPropertyOrder(-3)]
-    public long Id => _item.Id.ConvertTo<long>();
+    public virtual long Id => _item.Id.ConvertTo<long>();
     [JsonPropertyOrder(-2)]
-    public string Name => _item.Name ?? string.Empty;
+    public virtual string Name => _item.Name ?? string.Empty;
     [JsonPropertyOrder(-1)]
-    public string SystemName => _item.SystemName ?? string.Empty;
+    public virtual string SystemName => _item.SystemName ?? string.Empty;
     [JsonIgnore]
     public virtual IDictionary<string, object> AdditionalProperties { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     protected void ReplaceModel(TItem model)

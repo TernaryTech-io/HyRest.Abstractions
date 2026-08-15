@@ -5,8 +5,8 @@ namespace HyRest;
 /// <summary>
 /// Base abstract class for all model colletions, for Documents, Keywords, etc.
 /// </summary>
-/// <typeparam name="IHylandItem"></typeparam>
-public abstract class OnBaseItemCollection<T> : HylandItemCollection
+/// <typeparam name="IOnBaseItem"></typeparam>
+public abstract class OnBaseItemCollection<T> : OnBaseItemCollection
     where T : class, IOnBaseItem
 {
     /// <summary>
@@ -23,7 +23,7 @@ public abstract class OnBaseItemCollection<T> : HylandItemCollection
 /// <summary>
 /// Base abstract class for all model colletions, for Documents, Keywords, etc.
 /// </summary>
-public abstract class HylandItemCollection : HylandBase, IHylandItemCollection<IOnBaseItem>
+public abstract class OnBaseItemCollection : HylandBase, IOnBaseItemCollection
 {
     public virtual ICollection<IOnBaseItem> Items { get; set; } = [];
 }
@@ -31,15 +31,7 @@ public abstract class HylandItemCollection : HylandBase, IHylandItemCollection<I
 /// <summary>
 /// Base interface for all model colletions, for Documents, Keywords, etc.
 /// </summary>
-/// <typeparam name="IHylandItem"></typeparam>
-public interface IHylandItemCollection<IHylandItem> : IHylandItemCollection
-{
-
-}
-/// <summary>
-/// Base interface for all model colletions, for Documents, Keywords, etc.
-/// </summary>
-public interface IHylandItemCollection
+public interface IOnBaseItemCollection
 {
     ICollection<IOnBaseItem> Items { get; set; }
 }

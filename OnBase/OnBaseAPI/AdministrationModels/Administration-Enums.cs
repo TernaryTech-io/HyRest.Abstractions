@@ -32,14 +32,14 @@ public enum SecurityKeywordBaseModelSecurityKeywordType
 }
 
 [JsonConverter(typeof(JsonStringEnumConverter))]
-public enum GeneralSettingsCustomQueryConfiguration
+public enum GeneralSettingsApplicationConfiguration
 {
 
     [System.Runtime.Serialization.EnumMember(Value = @"None")]
     None = 0,
 
-    [System.Runtime.Serialization.EnumMember(Value = @"AnyCustomQueryType")]
-    AnyCustomQueryType = 1,
+    [System.Runtime.Serialization.EnumMember(Value = @"AnyApplicationType")]
+    AnyApplicationType = 1,
 
     [System.Runtime.Serialization.EnumMember(Value = @"OnlyTypesWithUserGroupSecurity")]
     OnlyTypesWithUserGroupSecurity = 2,
@@ -83,14 +83,14 @@ public enum ProductsWorkflowConfiguration
 
 
 [JsonConverter(typeof(JsonStringEnumConverter))]
-public enum ConfigurationRightsCustomQueryConfiguration
+public enum ConfigurationRightsApplicationConfiguration
 {
 
     [System.Runtime.Serialization.EnumMember(Value = @"None")]
     None = 0,
 
-    [System.Runtime.Serialization.EnumMember(Value = @"AnyCustomQueryType")]
-    AnyCustomQueryType = 1,
+    [System.Runtime.Serialization.EnumMember(Value = @"AnyApplicationType")]
+    AnyApplicationType = 1,
 
     [System.Runtime.Serialization.EnumMember(Value = @"OnlyTypesWithUserGroupSecurity")]
     OnlyTypesWithUserGroupSecurity = 2,

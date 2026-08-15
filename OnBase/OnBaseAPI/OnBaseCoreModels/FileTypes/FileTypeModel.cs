@@ -1,5 +1,7 @@
 ﻿
 
+using Refit;
+
 namespace HyRest.API.Models;
 /// <summary>
 /// An array of file types.
@@ -14,5 +16,5 @@ public partial class FileTypeCollectionModel : OnBaseItemTypeCollection<FileType
 /// </summary>
 public partial class FileTypeModel : OnBaseItemType
 {
-    
+
 }

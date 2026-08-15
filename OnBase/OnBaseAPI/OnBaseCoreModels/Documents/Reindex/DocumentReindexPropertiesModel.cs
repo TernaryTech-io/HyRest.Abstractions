@@ -51,7 +51,7 @@ public partial class DocumentReindexPropertiesModel : HylandBase
     /// An array of keywords grouped by the keyword group they belong to.
     /// </summary>
     [JsonPropertyName("keywordCollection")]
-    public KeywordCollectionModel KeywordCollection { get; set; } 
+    public KeywordCollectionModel KeywordCollection { get; set; } = new();
 }
 
 /// <summary>

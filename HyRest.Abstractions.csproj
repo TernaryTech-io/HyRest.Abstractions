@@ -24,10 +24,15 @@
     <PackageReference Include="Ternary.DataConversions" />
   </ItemGroup>
   <ItemGroup>
+    <Using Include="HyRest" />
+    <Using Include="HyRest.OnBase" />
+    <Using Include="HyRest.OnBase.Core" />
+    <Using Include="HyRest.OnBase.Session" />
+    <Using Include="HyRest.OnBase.WorkView" />
+    <Using Include="HyRest.OnBase.Administration" />
     <Using Include="Ternary.DataConversions" />
     <Using Include="HyRest.API" />
     <Using Include="HyRest.API.Models" />
-    <Using Include="HyRest.DocumentManagement" />
     <Using Include="HyRest.Identity" />
   </ItemGroup>
 </Project>

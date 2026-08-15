@@ -15,7 +15,6 @@ public partial class AutoFillKeywordSetCollectionModel : OnBaseItemTypeCollectio
 /// </summary>    
 public partial class AutoFillKeywordSetModel : OnBaseItemType
 {        
-
     /// <summary>
     /// The keyword type id of the autofill keyword set's primary key.
     /// </summary>
@@ -51,6 +50,10 @@ public partial class KeywordSetDataCollectionModel : OnBaseItemCollection<Keywor
 /// </summary>
 public partial class KeywordSetDataModel : OnBaseItem
 {
+    [JsonIgnore]
+    public override string? Name { get => string.Empty; set => base.Name = string.Empty; }
+    [JsonIgnore]
+    public override string? SystemName { get => string.Empty; set => base.Name = string.Empty; }
     /// <summary>
     /// An array of keyword values associated with an auto fill keyword set data object.
     /// </summary>
@@ -65,7 +68,11 @@ public partial class KeywordSetDataModel : OnBaseItem
 public partial class AutoFillMultipleMatchesResponse : OnBaseItem
 {
     [JsonIgnore]
-    private new string Id { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public override string Id { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    [JsonIgnore]
+    public override string? Name { get => string.Empty; set => base.Name = string.Empty; }
+    [JsonIgnore]
+    public override string? SystemName { get => string.Empty; set => base.Name = string.Empty; }
 
     /// <summary>
     /// An array of autofill keyword set data.

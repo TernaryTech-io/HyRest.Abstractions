@@ -1,7 +1,6 @@
 ﻿using Refit;
 
-namespace HyRest.CaseManagement;
-
+namespace HyRest.API.Models;
 public partial interface IOnBaseWorkViewAPI : IHylandRestAPI
 {
     /// <summary>Gets all local Attribute values for the specified Object.</summary>

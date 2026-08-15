@@ -1,6 +1,6 @@
 ﻿using Refit;
 
-namespace HyRest.CaseManagement;
+namespace HyRest.API.Models;
 
 public partial interface IOnBaseWorkViewAPI : IHylandRestAPI
 {
