@@ -90,8 +90,8 @@ public partial class CaptureProperties : HylandBase
 /// </summary>
 public partial class DocumentsPostResponse : OnBaseItem
 {
-    [JsonIgnore]
-    public override string Id { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    //[JsonIgnore]
+    //public override string Id { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 }
 
 /// <summary>

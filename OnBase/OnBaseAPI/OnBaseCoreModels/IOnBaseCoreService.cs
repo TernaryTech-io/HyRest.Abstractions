@@ -10,8 +10,6 @@ namespace HyRest.OnBase.ApiServices;
 /// </summary>
 public interface IOnBaseCoreService : IOnBaseService
 {
-    new ILogger<IOnBaseCoreService> Logger { get; }
-    ILogger<IOnBaseService> IOnBaseService.Logger => Logger;
     Task<AutoFillKeywordSetCollectionModel?> GetAutoFillKeywordSets(CancellationToken token = default);
     Task<AutoFillKeywordSetModel?> GetAutoFillKeywordSet(string identifier, CancellationToken token = default);
     Task<AutoFillKeywordSetKeywordTypeCollectionModel?> GetAutoFillKeywordSetKeywordTypes(string id, CancellationToken token = default);

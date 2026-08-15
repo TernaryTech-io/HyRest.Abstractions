@@ -15,19 +15,10 @@ public abstract class OnBaseItemTypeCollectionService<TModule, TItem> : OnBaseRe
 {
     public OnBaseItemTypeCollectionService(IOnBaseModule module) : base(module)
     {
-        GetCollection();
+        //GetCollection();
     }
     internal protected new TModule Module => (TModule)base.Module;
-    internal protected List<TItem> _items
-    {
-        get
-        {
-            if (_items == null || _items.Count == 0)
-                GetCollection();
-            return _items ?? [];
-        }
-        set => _items = value;
-    }
+    internal protected List<TItem> _items { get; set; } = [];
     public int Count => _items.Count;
     internal protected void Add(TItem item) => _items.Add(item);
     public bool HasItem(long id) => _items.Any(i => i.Id == id);
@@ -50,9 +41,9 @@ public abstract class OnBaseItemTypeCollectionService<TModule, TItem> : OnBaseRe
         if (_items.Count == 0 || !_items.Any(i => i.Id.ToString() == identifier || i.Name == identifier || i.SystemName == identifier))
         {
             var itemTask = GetOne(identifier);
-            itemTask.Wait(Module.App.ClientOptions.RequestTimeOut);
+            itemTask.Wait(Module.App.RequestTimeOut);
             if (!itemTask.IsCompletedSuccessfully || itemTask.Result == null)
-                GetCollection().Wait(Module.App.ClientOptions.RequestTimeOut);
+                GetCollection().Wait(Module.App.RequestTimeOut);
             else
             {
                 AddOrUpdate(itemTask.Result);
@@ -65,13 +56,13 @@ public abstract class OnBaseItemTypeCollectionService<TModule, TItem> : OnBaseRe
     IEnumerator<TItem> IEnumerable<TItem>.GetEnumerator()
     {
         if (_items.Count == 0)
-            GetCollection().Wait(Module.App.ClientOptions.RequestTimeOut);
+            GetCollection().Wait(Module.App.RequestTimeOut);
         return _items.GetEnumerator();
     }
     public IEnumerator GetEnumerator()
     {
         if (_items.Count == 0)
-            GetCollection().Wait(Module.App.ClientOptions.RequestTimeOut);
+            GetCollection().Wait(Module.App.RequestTimeOut);
         return _items.GetEnumerator();
     }
     protected void AddOrUpdate(TItem item)

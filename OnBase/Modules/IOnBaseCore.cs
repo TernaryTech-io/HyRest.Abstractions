@@ -7,6 +7,5 @@ namespace HyRest.OnBase.Core;
 /// </summary>
 public interface IOnBaseCore : IOnBaseModule
 {
-    new ILogger<IOnBaseCore> Logger { get; }
-    ILogger<IOnBaseModule> IOnBaseModule.Logger => Logger;
+
 }
