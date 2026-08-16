@@ -42,11 +42,11 @@ public abstract class OnBaseItemTypeCollectionService<TModule, TItem> : OnBaseRe
         if (!_retrieved)
         {
             GetCollection().Wait(Module.App.RequestTimeOut);
-            _retrieved = true;
-            item = _items.FirstOrDefault(i => i.Id.ToString() == identifier || i.Name == identifier || i.SystemName == identifier);
-            if(item != null)
-                GetDetailedObject(item);
-        }     
+            _retrieved = true;            
+        }
+        item = _items.FirstOrDefault(i => i.Id.ToString() == identifier || i.Name == identifier || i.SystemName == identifier);
+        if (item != null)
+            GetDetailedObject(item);
         return item;
     }
     IEnumerator<TItem> IEnumerable<TItem>.GetEnumerator()
