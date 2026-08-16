@@ -27,8 +27,4 @@ public interface IHylandClientOptions
     /// Sets the API server timeout in seconds.
     /// </summary>
     int RequestTimeOut { get; set; }
-    /// <summary>
-    /// Set the logging level for the application
-    /// </summary>
-    LogLevel LogLevel { get; set; }
 }

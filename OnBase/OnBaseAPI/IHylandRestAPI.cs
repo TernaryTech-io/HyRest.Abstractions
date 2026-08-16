@@ -8,7 +8,7 @@ namespace HyRest;
 /// </summary>
 public interface IHylandRestAPI
 {    
-    static TApi Get<TApi>(HttpClient client) => RestService.ForGenerated<TApi>(client);
+    static TApi Get<TApi>(HttpClient client, RefitSettings? settings) => RestService.ForGenerated<TApi>(client, settings);
 }
 
 
