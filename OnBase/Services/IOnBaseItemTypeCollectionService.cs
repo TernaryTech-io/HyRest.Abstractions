@@ -13,6 +13,7 @@ public abstract class OnBaseItemTypeCollectionService<TModule, TItem> : OnBaseRe
     where TModule : class, IOnBaseModule
     where TItem : class, IOnBaseItemTypeService
 {
+    private bool _retrieved { get; set; }
     public OnBaseItemTypeCollectionService(IOnBaseModule module) : base(module)
     {
         //GetCollection();
@@ -38,31 +39,32 @@ public abstract class OnBaseItemTypeCollectionService<TModule, TItem> : OnBaseRe
     public TItem? Find(string identifier)
     {
         TItem? item = null;
-        if (_items.Count == 0 || !_items.Any(i => i.Id.ToString() == identifier || i.Name == identifier || i.SystemName == identifier))
+        if (!_retrieved)
         {
-            var itemTask = GetOne(identifier);
-            itemTask.Wait(Module.App.RequestTimeOut);
-            if (!itemTask.IsCompletedSuccessfully || itemTask.Result == null)
-                GetCollection().Wait(Module.App.RequestTimeOut);
-            else
-            {
-                AddOrUpdate(itemTask.Result);
-                return itemTask.Result;
-            }
+            GetCollection().Wait(Module.App.RequestTimeOut);
+            _retrieved = true;
+            item = _items.FirstOrDefault(i => i.Id.ToString() == identifier || i.Name == identifier || i.SystemName == identifier);
+            if(item != null)
+                GetDetailedObject(item);
         }     
-        item = _items.FirstOrDefault(i => i.Id.ToString() == identifier || i.Name == identifier || i.SystemName == identifier);
         return item;
     }
     IEnumerator<TItem> IEnumerable<TItem>.GetEnumerator()
     {
-        if (_items.Count == 0)
+        if (!_retrieved)
+        {
             GetCollection().Wait(Module.App.RequestTimeOut);
+            _retrieved = true;
+        }
         return _items.GetEnumerator();
     }
     public IEnumerator GetEnumerator()
     {
         if (_items.Count == 0)
+        {
             GetCollection().Wait(Module.App.RequestTimeOut);
+            _retrieved = true;
+        }
         return _items.GetEnumerator();
     }
     protected void AddOrUpdate(TItem item)
@@ -70,6 +72,12 @@ public abstract class OnBaseItemTypeCollectionService<TModule, TItem> : OnBaseRe
         if(_items.Any(i => i.Id == item.Id))
             _items.RemoveAll(i => i.Id == item.Id);
         _items.Add(item);
+    }
+    private async Task GetDetailedObject(TItem item)
+    {
+        var detailed = await GetOne(item.Id.ToString());
+        if(detailed != null)
+            AddOrUpdate(detailed);
     }
     protected abstract Task GetCollection(CancellationToken token = default);
     protected abstract Task<TItem?> GetOne(string id, CancellationToken token = default);

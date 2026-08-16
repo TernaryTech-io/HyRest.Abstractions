@@ -9,6 +9,7 @@ public abstract partial class OnBaseService<TApi> : IOnBaseService
     private readonly ILogger<IOnBaseService> _logger;
     private readonly IHylandClientFactory _hylandClientFactory;
     private readonly IOnBaseAppCache _cache;
+    protected string? CachePrefix => _hylandClientFactory?.AuthClient?.UserInfo?.ToString();
     public OnBaseService(IOnBaseAppCache cache, IHylandClientFactory hylandClientFactory, ILogger<IOnBaseService> logger)
     {
         _hylandClientFactory = hylandClientFactory;
