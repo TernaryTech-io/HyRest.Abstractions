@@ -1,11 +1,13 @@
-﻿namespace HyRest.Session;
+﻿using Microsoft.Extensions.Logging;
+
+namespace HyRest.OnBase.Session;
 public interface IOnBaseSession : IOnBaseModule
 {
-    Task InitiateAsync();
+    Task InitiateAsync(CancellationToken token = default);
     void Initiate();
-    Task HeartbeatAsync();
+    Task HeartbeatAsync(CancellationToken token = default);
     void Heatbeat();
-    Task DisconnectAsync();
+    Task DisconnectAsync(CancellationToken token = default);
     void Disconnect();
     ISessionCookie? Cookie { get; }
     bool IsActive { get; }

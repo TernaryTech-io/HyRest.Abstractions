@@ -15,10 +15,12 @@ public partial class RevisionCollectionModel : OnBaseItemCollection<RevisionMode
 /// </summary>    
 public partial class RevisionModel : OnBaseItem
 {
-
     [JsonPropertyName("revisionId")]
-    public override string Id { get => base.Id; set => base.Id = value; }
-
+    public override string Id { get; set; }
+    [JsonIgnore]
+    public override string Name { get => string.Empty; set => base.Name = string.Empty; }
+    [JsonIgnore]
+    public override string SystemName { get => string.Empty; set => base.Name = string.Empty; }
     /// <summary>
     /// The revision number for display purposes and provide ordering of revisions.
     /// </summary>

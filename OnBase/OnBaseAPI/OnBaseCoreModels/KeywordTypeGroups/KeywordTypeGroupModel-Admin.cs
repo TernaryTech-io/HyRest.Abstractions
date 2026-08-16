@@ -32,12 +32,11 @@ public partial class KeywordTypeGroupModel : OnBaseItemType
 
 public partial class KeywordTypeGroupPOST : KeywordTypeGroupModel
 {
-
     /// <summary>
     /// An array of keyword types and squence numbers on keyword type groups.
     /// </summary>
     [JsonPropertyName("keywordTypes")]
     [System.ComponentModel.DataAnnotations.Required]
-    public ICollection<KeywordTypeKeywordTypeGroupAssignment> KeywordTypes { get; set; } = new Collection<KeywordTypeKeywordTypeGroupAssignment>();
+    public ICollection<KeywordTypeKeywordTypeGroupAssignment> KeywordTypeAssignments { get; set; } = new Collection<KeywordTypeKeywordTypeGroupAssignment>();
 
 }

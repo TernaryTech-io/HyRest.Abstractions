@@ -39,7 +39,7 @@ public enum Fit
 public enum QueryType
 {
 
-    [System.Runtime.Serialization.EnumMember(Value = @"CustomQuery")]
+    [System.Runtime.Serialization.EnumMember(Value = @"Application")]
     CustomQuery = 0,
 
     [System.Runtime.Serialization.EnumMember(Value = @"DocumentType")]
@@ -235,12 +235,14 @@ public enum CapturePropertiesReviewStatus
 [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum KeywordTypeGroupStorageType
 {
+    [System.Runtime.Serialization.EnumMember(Value = null)]
+    None = 0,
 
     [System.Runtime.Serialization.EnumMember(Value = @"SingleInstance")]
-    SingleInstance = 0,
+    SingleInstance = 1,
 
     [System.Runtime.Serialization.EnumMember(Value = @"MultiInstance")]
-    MultiInstance = 1
+    MultiInstance = 2
 }
 
 [JsonConverter(typeof(JsonStringEnumConverter))]

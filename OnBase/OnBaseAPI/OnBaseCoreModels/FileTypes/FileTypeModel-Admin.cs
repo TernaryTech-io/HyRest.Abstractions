@@ -76,5 +76,6 @@ public partial class DisplayTypeWithValuesCollectionModel : OnBaseItemTypeCollec
 
 public partial class DisplayTypeModel : OnBaseItemType
 {
-    private string SystemName { get; set; } = "";
+    [JsonIgnore]
+    public override string? SystemName { get => string.Empty; set => base.Name = string.Empty; }
 }

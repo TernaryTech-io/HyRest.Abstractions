@@ -6,7 +6,7 @@ namespace HyRest.API.Models;
 /// <summary>
 /// Instance data for keywords on a document
 /// </summary>
-public partial class KeywordCollectionModel : OnBaseItem
+public partial class KeywordCollectionModel : OnBaseBase
 {
     /// <summary>
     /// Guid string to ensure integrity of restricted keyword values.
@@ -16,7 +16,7 @@ public partial class KeywordCollectionModel : OnBaseItem
     /// An array of T items.
     /// </summary>
     [JsonPropertyName("items")]
-    public ICollection<KeywordGroupModel> Items { get; set; } = [];
+    public new ICollection<KeywordGroupModel> Items { get; set; } = [];
 }
 
 /// <summary>
@@ -30,7 +30,8 @@ public partial class KeywordGroupModel : OnBaseItem
     /// <br/>group.
     /// </summary>
     [JsonPropertyName("typeGroupId")]
-    public override string Id { get => base.Id; set => base.Id = value; }
+    public override string? Id { get; set; } //changed to override
+    //public override string Id { get => base.Id; set => base.Id = value; }
 
     /// <summary>
     /// The identifier for the group of keywords. This field will be omitted

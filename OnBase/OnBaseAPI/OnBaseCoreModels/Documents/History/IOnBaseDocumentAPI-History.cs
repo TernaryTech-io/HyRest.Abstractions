@@ -1,4 +1,5 @@
-﻿using Refit;
+﻿using HyRest.OnBase.Core;
+using Refit;
 
 namespace HyRest.API;
 
@@ -40,6 +41,6 @@ public partial interface IOnBaseDocumentAPI : IHylandRestAPI
     /// </exception>
     [Headers("Accept: application/json")]
     [Get("/onbase/core/documents/{documentId}/history")]
-    Task<ApiResponse<DocumentHistory>> History(string documentId, [Query] System.DateTimeOffset? startDate, [Query] System.DateTimeOffset? endDate, [Query] string? userId);
+    Task<ApiResponse<DocumentHistory?>> History(string documentId, [Query] System.DateTimeOffset? startDate, [Query] System.DateTimeOffset? endDate, [Query] string? userId);
 
 }

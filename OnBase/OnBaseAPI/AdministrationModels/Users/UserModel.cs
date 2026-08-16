@@ -5,7 +5,7 @@ namespace HyRest.API.Models;
 /// <summary>
 /// An array of user identifiers.
 /// </summary>
-public partial class UserCollectionModel : OnBaseItemCollection<UserModel>
+public partial class UserCollectionModel : OnBaseItemTypeCollection<UserModel>
 {
 
 }
@@ -13,15 +13,8 @@ public partial class UserCollectionModel : OnBaseItemCollection<UserModel>
 /// <summary>
 /// User data.
 /// </summary>
-public partial class UserModel : OnBaseItem
+public partial class UserModel : OnBaseItemType
 {
-    /// <summary>
-    /// The real name of the user.
-    /// </summary>
-    [JsonPropertyName("name")]
-    [System.ComponentModel.DataAnnotations.StringLength(75)]
-    public string Name { get; set; } = "";
-
     /// <summary>
     /// The real name of the user.
     /// </summary>
@@ -40,7 +33,7 @@ public partial class UserModel : OnBaseItem
     /// User password. The password must meet the requirements of the current password policy.
     /// </summary>
     [JsonPropertyName("password")]
-    public string Password { get; set; }
+    public string? Password { get; set; }
 
     /// <summary>
     /// Force the user to update their password the next time they login.
@@ -112,7 +105,7 @@ public partial class UserPOSTModel : UserModel
     /// Indicates initial user groups for this user to be added to
     /// </summary>
     [JsonPropertyName("userGroupIds")]
-    public ICollection<int> UserGroupIds { get; set; }
+    public ICollection<int> UserGroupIds { get; set; } = [];
 }
 
 /// <summary>
@@ -124,7 +117,7 @@ public partial class UserGroupUserAssignmentCollectionModel : HylandBase
     /// An array of user group user assignments.
     /// </summary>
     [JsonPropertyName("items")]
-    public ICollection<UserGroupUserAssignmentModel> Items { get; set; }
+    public ICollection<UserGroupUserAssignmentModel> Items { get; set; } = [];
 }
 
 /// <summary>
@@ -169,12 +162,10 @@ public partial class UsersUserGroupsModel : HylandBase
 /// </summary>    
 public partial class UserPasswordModel : HylandBase
 {
-
     /// <summary>
     /// The password for the user.
     /// </summary>
     [JsonPropertyName("password")]
-    [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
     public string Password { get; set; }
 
     /// <summary>

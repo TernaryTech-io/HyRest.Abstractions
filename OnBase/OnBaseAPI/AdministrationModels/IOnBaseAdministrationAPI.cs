@@ -1,5 +1,4 @@
 using Refit;
-using System.Text.Json.Serialization;
 
 namespace HyRest.API;
 

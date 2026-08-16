@@ -1,4 +1,4 @@
-﻿namespace HyRest.Api.Models;
+﻿namespace HyRest.API.Models;
 
 /// <summary>
 /// An array of disk groups.

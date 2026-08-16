@@ -20,7 +20,7 @@ public partial class ClassModel : OnBaseItemType
     /// The base most Class Id of the current class.
     /// </summary>
     [JsonPropertyName("rootClassId")]
-    public string RootClassId { get; set; }
+    public string? RootClassId { get; set; }
 
 }
 

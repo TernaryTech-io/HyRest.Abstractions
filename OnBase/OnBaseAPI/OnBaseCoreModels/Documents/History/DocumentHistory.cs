@@ -1,20 +1,18 @@
 ﻿
 using System.Text.Json.Serialization;
 
-namespace HyRest.DocumentManagement;
+namespace HyRest.OnBase.Core;
 
 /*
  * These are used directly in the Document Service class. 
  */
-public partial class DocumentHistory : OnBaseItemCollection<HistoryItem>
+public partial class DocumentHistory : OnBaseBaseCollection<HistoryItem>
 {
 
 }
 
-public partial class HistoryItem : OnBaseItem
+public partial class HistoryItem : OnBaseBase
 {
-    [JsonIgnore]
-    private new string Id { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     /// <summary>
     /// The action taken on the document
     /// </summary>

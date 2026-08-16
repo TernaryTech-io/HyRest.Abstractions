@@ -5,7 +5,7 @@ namespace HyRest.API.Models;
 /// <summary>
 /// A collection of Filters.
 /// </summary>
-public partial class FilterTypeCollectionModel : OnBaseItemTypeCollection<FilterTypeModel>
+public partial class FilterCollectionModel : OnBaseItemTypeCollection<FilterModel>
 {
 
 }
@@ -13,7 +13,7 @@ public partial class FilterTypeCollectionModel : OnBaseItemTypeCollection<Filter
 /// <summary>
 /// Information about a Filter.
 /// </summary>
-public partial class FilterTypeModel : OnBaseItemType
+public partial class FilterModel : OnBaseItemType
 {
     /// <summary>
     /// Id of a Class.

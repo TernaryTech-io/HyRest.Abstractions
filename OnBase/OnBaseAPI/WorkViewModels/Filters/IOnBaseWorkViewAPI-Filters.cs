@@ -1,6 +1,6 @@
 ﻿using Refit;
 
-namespace HyRest.CaseManagement;
+namespace HyRest.API.Models;
 
 public partial interface IOnBaseWorkViewAPI : IHylandRestAPI
 {
@@ -34,7 +34,7 @@ public partial interface IOnBaseWorkViewAPI : IHylandRestAPI
     /// </exception>
     [Headers("Accept: application/json")]
     [Get("/onbase/workview/filters/{filterId}")]
-    Task<ApiResponse<FilterTypeModel>> FiltersGet2(string filterId, [Header("Accept-Language")] string accept_Language = "en-US");
+    Task<ApiResponse<FilterModel>> FiltersGet2(string filterId, [Header("Accept-Language")] string accept_Language = "en-US");
 
     /// <summary>Creates the query given a Filter or dynamic filtering model and returns the location of the query results.</summary>
     /// <param name="accept_Language">

@@ -1,4 +1,3 @@
-using System.Security;
 using System.Text.Json.Serialization;
 
 namespace HyRest.Identity;

@@ -163,7 +163,7 @@ public partial class DocumentTypePOST : DocumentTypeModel
     /// Indicates initial user groups for this Document Type to be added to
     /// </summary>
     [JsonPropertyName("userGroupIds")]
-    public ICollection<int> UserGroupIds { get; set; }
+    public ICollection<int> UserGroupIds { get; set; } = [];
 
 }
 
@@ -189,20 +189,15 @@ public partial class QueryRestrictions : HylandBase
     public QueryRestrictionsWarningType WarningType { get; set; } = QueryRestrictionsWarningType.NoWarning;
 }
 
-public partial class DocumentTypeKeywordTypeAssignmentCollection : HylandBase
+public partial class DocumentTypeKeywordTypeAssignmentCollection : OnBaseBaseCollection<DocumentTypeKeywordTypeAssignment>
 {
 
-    /// <summary>
-    /// An array of document type keyword type assignments.
-    /// </summary>
-    [JsonPropertyName("items")]
-    public ICollection<DocumentTypeKeywordTypeAssignment> Items { get; set; }
 }
 
 /// <summary>
 /// An assignment of a keyword type to a document type.
 /// </summary>
-public partial class DocumentTypeKeywordTypeAssignment : HylandBase
+public partial class DocumentTypeKeywordTypeAssignment : OnBaseBase
 {
     /// <summary>
     /// Id of the keyword type.
@@ -296,20 +291,16 @@ public partial class DocumentTypeKeywordTypeAssignment : HylandBase
 /// <summary>
 /// An array of user group, document type assignments.
 /// </summary>    
-public partial class UserGroupDocumentTypeAssignmentCollection : HylandBase
+public partial class UserGroupDocumentTypeAssignmentCollection : OnBaseBaseCollection<UserGroupDocumentTypeAssignment>
 {
-    /// <summary>
-    /// An array of user group, document type assignments.
-    /// </summary>
-    [JsonPropertyName("items")]
-    public ICollection<UserGroupDocumentTypeAssignment> Items { get; set; }
+    
 }
 
 /// <summary>
 /// An assignment of a document type to a user group.
 /// </summary>
 
-public partial class UserGroupDocumentTypeAssignment : HylandBase
+public partial class UserGroupDocumentTypeAssignment : OnBaseBase
 {
     /// <summary>
     /// Id of the user group.

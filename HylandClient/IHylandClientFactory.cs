@@ -3,7 +3,8 @@
 namespace HyRest;
 public interface IHylandClientFactory
 {
-    UserInfo? UserInfo { get; }
-    CookieContainer? CookieContainer { get; }
+    IHylandApiClient ApiClient  { get; }
+    IHylandAuthClient AuthClient { get; }
+    IHylandClientOptions ClientOptions { get; }
     TApi CreateClient<TApi>() where TApi : IHylandRestAPI;
 }

@@ -16,6 +16,10 @@ public partial class QueryResultsModel : OnBaseItemCollection<DocumentResultMode
 /// </summary>
 public partial class DocumentResultModel : OnBaseItem
 {
+    [JsonIgnore]
+    public override string? Name { get => string.Empty; set => base.Name = string.Empty; }
+    [JsonIgnore]
+    public override string? SystemName { get => string.Empty; set => base.Name = string.Empty; }
     /// <summary>
     /// An array of Display columns returned from executing a query.
     /// </summary>
@@ -102,14 +106,14 @@ public partial class DateRange : HylandBase
 }
 
 /// <summary>
-/// The type of query to execute.  DocumentType, DocumentTypeGroup, and CustomQuery type queries are supported.
-/// <br/>See the /custom-queries documentation for which CustomQuery types are supported.
+/// The type of query to execute.  DocumentType, DocumentTypeGroup, and Application type queries are supported.
+/// <br/>See the /custom-queries documentation for which Application types are supported.
 /// </summary>
 public partial class QueryTypeModel : HylandBase
 {
     /// <summary>
-    /// The type of query to execute.  DocumentType, DocumentTypeGroup, and CustomQuery type queries are supported.
-    /// <br/>See the /custom-queries documentation for which CustomQuery types are supported.
+    /// The type of query to execute.  DocumentType, DocumentTypeGroup, and Application type queries are supported.
+    /// <br/>See the /custom-queries documentation for which Application types are supported.
     /// </summary>
     [JsonPropertyName("type")]
     [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
@@ -126,13 +130,17 @@ public partial class QueryTypeModel : HylandBase
 /// <summary>
 /// Represents a keyword required to execute a query.
 /// </summary>
-public partial class QueryKeywordModel : HylandBase
+public partial class QueryKeywordModel : OnBaseItem
 {
     /// <summary>
     /// The keyword type Id for the keyword.
     /// </summary>
     [JsonPropertyName("typeId")]
-    public string Id { get; set; }
+    public override string Id { get; set; }
+    [JsonIgnore]
+    public override string? Name { get => string.Empty; set => base.Name = string.Empty; }
+    [JsonIgnore]
+    public override string? SystemName { get => string.Empty; set => base.Name = string.Empty; }
 
     /// <summary>
     /// The keyword value.
@@ -201,7 +209,7 @@ public partial class DisplayColumnConfigurationCollectionModel : OnBaseItemColle
 public partial class DisplayColumnConfiguration : OnBaseItem
 {
     [JsonIgnore]
-    private new string Id { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public override string? SystemName { get => string.Empty; set => base.Name = string.Empty; }
 
     /// <summary>
     /// Index representing the Display column configuration
@@ -220,12 +228,12 @@ public partial class DisplayColumnConfiguration : OnBaseItem
     /// The Header value for the Display Column.
     /// </summary>
     [JsonPropertyName("heading")]
-    public string? Heading { get; set; }
+    public string? Name { get; set; }
 
     /// <summary>
     /// The Keyword Type associated with the Display Column.
     /// <br/>Only necessary if the Display Column Type is "Keyword".
     /// </summary>
     [JsonPropertyName("keywordTypeId")]
-    public string? KeywordTypeId { get; set; }
+    public override string? Id { get; set; }
 }

@@ -1,5 +1,4 @@
 ﻿using Refit;
-using HyRest.Api.Models;
 
 namespace HyRest.API;
 

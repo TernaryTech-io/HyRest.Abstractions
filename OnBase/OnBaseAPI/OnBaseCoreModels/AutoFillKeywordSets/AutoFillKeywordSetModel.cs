@@ -15,7 +15,6 @@ public partial class AutoFillKeywordSetCollectionModel : OnBaseItemTypeCollectio
 /// </summary>    
 public partial class AutoFillKeywordSetModel : OnBaseItemType
 {        
-
     /// <summary>
     /// The keyword type id of the autofill keyword set's primary key.
     /// </summary>
@@ -51,28 +50,15 @@ public partial class KeywordSetDataCollectionModel : OnBaseItemCollection<Keywor
 /// </summary>
 public partial class KeywordSetDataModel : OnBaseItem
 {
+    [JsonIgnore]
+    public override string? Name { get => string.Empty; set => base.Name = string.Empty; }
+    [JsonIgnore]
+    public override string? SystemName { get => string.Empty; set => base.Name = string.Empty; }
     /// <summary>
     /// An array of keyword values associated with an auto fill keyword set data object.
     /// </summary>
     [JsonPropertyName("keywords")]
-    public ICollection<AutoFillKeywordSetKeywordModel> Keywords { get; set; } = [];
-}
-
-/// <summary>
-/// Autofill keyword set keyword data.
-/// </summary>
-public partial class AutoFillKeywordSetKeywordModel : OnBaseItem
-{
-    /// <summary>
-    /// The keyword type id.
-    /// </summary>
-    [JsonPropertyName("typeId")]
-    public new string? Id { get; set; }
-    /// <summary>
-    /// The keyword value.
-    /// </summary>
-    [JsonPropertyName("value")]
-    public string? Value { get; set; }
+    public ICollection<KeywordValueModel> Keywords { get; set; } = [];
 }
 
 /// <summary>
@@ -82,7 +68,11 @@ public partial class AutoFillKeywordSetKeywordModel : OnBaseItem
 public partial class AutoFillMultipleMatchesResponse : OnBaseItem
 {
     [JsonIgnore]
-    private new string Id { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public override string Id { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    [JsonIgnore]
+    public override string? Name { get => string.Empty; set => base.Name = string.Empty; }
+    [JsonIgnore]
+    public override string? SystemName { get => string.Empty; set => base.Name = string.Empty; }
 
     /// <summary>
     /// An array of autofill keyword set data.
@@ -131,7 +121,7 @@ public partial class ReindexAutoFillExpansionModifierProperties : DiscriminatorO
     /// The Primary Keyword value of the AutoFill Keyword Set.
     /// </summary>
     [JsonPropertyName("autoFillKeywordSetPrimaryKeyword")]
-    public AutoFillKeywordSetKeywordModel AutoFillKeywordSetPrimaryKeyword { get; set; } = new();
+    public KeywordValueModel AutoFillKeywordSetPrimaryKeyword { get; set; } = new();
 
     [JsonPropertyName("keywordCollection")]
     public KeywordCollectionModel KeywordCollection { get; set; } = new();
@@ -171,7 +161,7 @@ public partial class ArchivalAutoFillExpansionModifierProperties : Discriminator
     /// The Primary Keyword value of the AutoFill Keyword Set.
     /// </summary>
     [JsonPropertyName("autoFillKeywordSetPrimaryKeyword")]
-    public AutoFillKeywordSetKeywordModel AutoFillKeywordSetPrimaryKeyword { get; set; } = new();
+    public KeywordValueModel AutoFillKeywordSetPrimaryKeyword { get; set; } = new();
 
     [JsonPropertyName("keywordCollection")]
     public KeywordCollectionModel KeywordCollection { get; set; } = new();
@@ -204,7 +194,7 @@ public partial class AutoFillExpansionProperties : HylandBase
     /// The Primary Keyword value of the AutoFill Keyword Set.
     /// </summary>
     [JsonPropertyName("autoFillKeywordSetPrimaryKeyword")]
-    public AutoFillKeywordSetKeywordModel AutoFillKeywordSetPrimaryKeyword { get; set; } = new();
+    public KeywordValueModel AutoFillKeywordSetPrimaryKeyword { get; set; } = new();
 
     [JsonPropertyName("keywordCollection")]
     public KeywordCollectionModel KeywordCollection { get; set; } = new();

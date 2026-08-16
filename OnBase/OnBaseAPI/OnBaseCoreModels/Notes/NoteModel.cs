@@ -10,6 +10,8 @@ public partial class NoteCollectionModel : OnBaseItemCollection<NoteModel>
 
 public partial class NoteModel : OnBaseItem
 {    
+    [JsonIgnore]
+    public override string? SystemName { get => string.Empty; set => base.Name = string.Empty; }
     /// <summary>
     /// The note type identifier of the note.
     /// </summary>
@@ -20,7 +22,7 @@ public partial class NoteModel : OnBaseItem
     /// The title of the note.
     /// </summary>
     [JsonPropertyName("title")]
-    public string? Title { get; set; }
+    public override string? Name { get; set; }
 
     /// <summary>
     /// The text in the note.

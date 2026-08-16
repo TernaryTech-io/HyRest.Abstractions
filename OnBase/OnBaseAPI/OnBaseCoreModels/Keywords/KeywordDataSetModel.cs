@@ -1,26 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
 
 namespace HyRest.API.Models;
 
 /// <summary>
 /// A list of keyword dataset values
 /// </summary>    
-public partial class KeywordDatasetCollectionModel : HylandBase
+public partial class KeywordDatasetCollectionModel : OnBaseBaseCollection<KeywordDatasetValueModel>
 {
 
-    /// <summary>
-    /// An array of keyword data set.
-    /// </summary>
-    [JsonPropertyName("items")]
-    public ICollection<KeywordDatasetValueModel> Items { get; set; }
 }
 
-public partial class KeywordDatasetValueModel : HylandBase
+public partial class KeywordDatasetValueModel : OnBaseBase
 {
     /// <summary>
     /// Dataset sequence number

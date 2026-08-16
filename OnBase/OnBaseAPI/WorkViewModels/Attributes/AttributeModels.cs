@@ -56,7 +56,7 @@ public partial class AttributeModel : OnBaseItemType
 /// A collection of View Attributes.
 /// </summary>
 
-public partial class ViewAttributeCollectionModel : Collection<ViewAttributeModel>
+public partial class ViewAttributeCollectionModel : OnBaseBaseCollection<ViewAttributeModel>
 {
 
 }
@@ -65,21 +65,21 @@ public partial class ViewAttributeCollectionModel : Collection<ViewAttributeMode
 /// Information about a View Attribute for a Filter.
 /// </summary>
 
-public partial class ViewAttributeModel : HylandBase
+public partial class ViewAttributeModel : OnBaseBase
 {
     /// <summary>
     /// Name used to describe this view Attribute.
     /// </summary>
     [JsonPropertyName("heading")]
     [Required(AllowEmptyStrings = true)]
-    public string Heading { get; set; }
+    public string? Heading { get; set; }
 
     /// <summary>
     /// Path to the Attribute shown in this View Attribute.
     /// </summary>
     [JsonPropertyName("dataAddress")]
     [Required(AllowEmptyStrings = true)]
-    public string DataAddress { get; set; }
+    public string? DataAddress { get; set; }
 
     [JsonPropertyName("dataType")]
     public AttributeTypeDataType DataType { get; set; }
@@ -88,7 +88,7 @@ public partial class ViewAttributeModel : HylandBase
     /// Desired width of this column for grid displays.
     /// </summary>
     [JsonPropertyName("width")]
-    public string Width { get; set; }
+    public string? Width { get; set; }
 
     [JsonPropertyName("horizontalAlignment")]
     public HorizontalAlignment HorizontalAlignment { get; set; }

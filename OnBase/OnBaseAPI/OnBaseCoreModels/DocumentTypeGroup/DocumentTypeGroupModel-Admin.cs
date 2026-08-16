@@ -40,13 +40,8 @@ public partial class DocumentTypeGroupPOST : DocumentTypeGroupModel
 /// <summary>
 /// An array of user group, document type group assignments.
 /// </summary>    
-public partial class UserGroupDocumentTypeGroupAssignmentCollection : HylandBase
+public partial class UserGroupDocumentTypeGroupAssignmentCollection : OnBaseBaseCollection<UserGroupDocumentTypeGroupAssignment>
 {
-    /// <summary>
-    /// An array of user group, document type group assignments.
-    /// </summary>
-    [JsonPropertyName("items")]
-    public ICollection<UserGroupDocumentTypeGroupAssignment> Items { get; set; }
 
 }
 
@@ -54,7 +49,7 @@ public partial class UserGroupDocumentTypeGroupAssignmentCollection : HylandBase
 /// An assignment of a document type group to a user group.
 /// </summary>
 
-public partial class UserGroupDocumentTypeGroupAssignment : HylandBase
+public partial class UserGroupDocumentTypeGroupAssignment : OnBaseBase
 {
     /// <summary>
     /// Id of the user group.
