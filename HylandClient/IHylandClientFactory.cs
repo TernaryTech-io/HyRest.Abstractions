@@ -1,9 +1,8 @@
-﻿using System.Net;
+﻿namespace HyRest;
 
-namespace HyRest;
 public interface IHylandClientFactory
 {
-    IHylandApiClient ApiClient  { get; }
+    IHylandApiClient ApiClient { get; }
     IHylandAuthClient AuthClient { get; }
     IHylandClientOptions ClientOptions { get; }
     TApi CreateClient<TApi>() where TApi : IHylandRestAPI;

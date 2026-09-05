@@ -1,0 +1,35 @@
+//{
+//  "Id": "TOKENEXCHANGE-UNIQUE-GENERATED-IDENTIFIER",
+//  "Name": "TOKENEXCHANGE-PROVIDER",
+//  "Type": 9,
+//  "ProtocolSettings": {
+//    "Metadata": {
+//      "CacheDurationInSeconds": 14440
+//    },
+//    "Issuer": "<Issuer>",
+//    "SubjectTokenType": "urn:ietf:params:oauth:token-type:id_token"
+//  },
+//  "UserAttributeMappingSettings": {
+//    "userid": "uniqueIdentifier",
+//    "username": "username",
+//    "email": "email",
+//    "realName": "realname",
+//    "group": "memberOf"
+//  },
+//  "UserProvisioningSettings": {
+//    "UserProvisioningEnabled": true,
+//    "UserProvisioningCreateEnabled": true,
+//    "UserProvisioningUpdateEnabled": true,
+//    "DefaultSsoGroupMapping": [
+//      {
+//        "ClientId": "",
+//        "Groups": [
+//          ""
+//        ]
+//      }
+//    ]
+//  },
+//  "ClaimTransformationSettings": {
+//    "StripDomainFromUserName": false
+//  }
+//}
