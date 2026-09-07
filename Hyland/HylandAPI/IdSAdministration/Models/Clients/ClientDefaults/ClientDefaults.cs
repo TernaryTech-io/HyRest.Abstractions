@@ -25,7 +25,7 @@ public partial class CreateModifyClient
     public static CreateModifyClient DisconnectedScanning => new CreateModifyClient()
     {
         ProtocolType = "oidc",
-        RedirectUris = ["http://127.0.0.1"],
+        RedirectUris = [],
         AuthenticationRestrictionSettings = new AuthenticationRestrictionSettings()
         {
             AllowedGrantTypes = [GrantType.AuthorizationCode.Value],
@@ -114,12 +114,12 @@ public partial class CreateModifyClient
         }
     };
     /// <summary>
-    /// Requires a Client Secret and a redirect Url
+    /// Requires a Client Secret and a Redirect URI
     /// </summary>
     public static CreateModifyClient AdminPortal => new CreateModifyClient()
     {
         ProtocolType = "oidc",
-        RedirectUris = ["http://localhost"],
+        RedirectUris = [],
         AuthenticationRestrictionSettings = new AuthenticationRestrictionSettings()
         {
             AllowedGrantTypes = [GrantType.AuthorizationCode.Value],
