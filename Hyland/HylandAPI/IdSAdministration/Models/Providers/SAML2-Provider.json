@@ -1,0 +1,43 @@
+//{
+//  "Id": "SAML2-UNIQUE-GENERATED-IDENTIFIER",
+//  "Name": "SAML2-PROVIDER",
+//  "Type": 3,
+//  "ProtocolSettings": {
+//    "IdentityProvider": "<Identityprovider>",
+//    "ExternalIdPMetadataLocation": "<External IdP metadata location>",
+//    "SecuritySettings": {
+//      "EncryptionCertificatePath": "thumbprint:<CertificateThumprint>",
+//      "SigningCertificatePath": "C://<certificatepath>",
+//      "SigningAlgorithm": "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
+//      "WantAssertionsSigned": false,
+//      "MinimumIncomingSigningAlgorithm": "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"
+//    },
+//    "BindingsSettings": {
+//      "AuthenticationRequestBinding": 0,
+//      "AssertionBinding": 0
+//    }
+//  },
+//  "UserAttributeMappingSettings": {
+//    "userid": "uniqueIdentifier",
+//    "username": "username",
+//    "email": "email",
+//    "realName": "realname",
+//    "group": "memberOf"
+//  },
+//  "UserProvisioningSettings": {
+//    "UserProvisioningEnabled": true,
+//    "UserProvisioningCreateEnabled": true,
+//    "UserProvisioningUpdateEnabled": true,
+//    "DefaultSsoGroupMapping": [
+//      {
+//        "ClientId": "",
+//        "Groups": [
+//          ""
+//        ]
+//      }
+//    ]
+//  },
+//  "ClaimTransformationSettings": {
+//    "StripDomainFromUserName": false
+//  }
+//}

@@ -1,9 +1,38 @@
-﻿using System.Text.Json;
-using System.Text.Json.Serialization;
+﻿using HyRest.Hyland.IdentityAdministration;
 using System.IO;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace HyRest.Utilities;
 
+public class EnumToStringWithSpace<TEnum> : JsonConverter<TEnum>
+    where TEnum : Enum
+{
+    public override TEnum? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        if (reader.TokenType == JsonTokenType.Null)
+            return default;
+
+        if (reader.TokenType != JsonTokenType.String)
+            throw new JsonException("Expected a string for Stream.");
+        string value = reader.GetString() ?? string.Empty;
+        value = value.Replace(" ", "_");
+
+        if (Enum.TryParse(typeof(TEnum), value, out object? result))
+            return (TEnum)result;
+        else
+            return default;
+    }
+    public override void Write(Utf8JsonWriter writer, TEnum value, JsonSerializerOptions options)
+    {
+        if (value == null)
+        {
+            writer.WriteNullValue();
+            return;
+        }
+        writer.WriteStringValue(value.ToString().Replace("_", " "));
+    }
+}
 public class StreamToBase64StringConverter : JsonConverter<Stream>
 {
     public override Stream? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
@@ -38,6 +67,23 @@ public class StreamToBase64StringConverter : JsonConverter<Stream>
     }
 }
 
+public class StructToStringConverter<T> : JsonConverter<T>
+    where T : struct, IBaseStruct
+{
+    public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        if (reader.TokenType != JsonTokenType.String)
+            throw new JsonException("Expected a string for Type.");
+
+        string strValue = reader.GetString() ?? string.Empty;
+        var item = T.MapByValue(strValue);
+        return (T)item;
+    }
+    public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
+    {
+        writer.WriteStringValue(value.ToString());
+    }
+}
 
 public class TypeToStringConverter : JsonConverter<Type>
 {
@@ -56,3 +102,4 @@ public class TypeToStringConverter : JsonConverter<Type>
         writer.WriteStringValue(value.FullName);
     }
 }
+

@@ -27,4 +27,8 @@ public interface IHylandClientOptions
     /// Sets the API server timeout in seconds.
     /// </summary>
     int RequestTimeOut { get; set; }
+    /// <summary>
+    /// Tenant Name, required for the Identity Admin App & Module
+    /// </summary>
+    string Tenant { get; set; }
 }

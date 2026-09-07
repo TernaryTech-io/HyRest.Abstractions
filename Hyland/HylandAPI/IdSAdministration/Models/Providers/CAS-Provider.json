@@ -1,0 +1,32 @@
+﻿//{
+//    "Id": "CAS-UNIQUE-GENERATED-IDENTIFIER",
+//    "Name": "CAS-PROVIDER",
+//    "Type": 4,
+//    "ProtocolSettings": {
+//        "IdentityProvider": "https://cas.com",
+//        "ProtocolVersion": 3
+//    },
+//    "UserAttributeMappingSettings": {
+//        "userid": "uniqueIdentifier",
+//        "username": "username",
+//        "email": "email",
+//        "realName": "realname",
+//        "group": "memberOf"
+//    },
+//    "UserProvisioningSettings": {
+//        "UserProvisioningEnabled": true,
+//        "UserProvisioningCreateEnabled": true,
+//        "UserProvisioningUpdateEnabled": true,
+//        "DefaultSsoGroupMapping": [
+//            {
+//                "ClientId": "",
+//                "Groups": [
+//                    ""
+//                ]
+//            }
+//        ]
+//    },
+//    "ClaimTransformationSettings": {
+//        "StripDomainFromUserName": false
+//    }
+//}

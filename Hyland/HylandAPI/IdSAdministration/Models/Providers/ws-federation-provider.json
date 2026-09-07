@@ -1,0 +1,32 @@
+//{
+//  "Id": "WSFEDERATION-UNIQUE-GENERATED-IDENTIFIER",
+//  "Name": "WSFEDERATION-PROVIDER",
+//  "Type": 5,
+//  "ProtocolSettings": {
+//    "Metadata": "https://metadataurl",
+//    "Realm": "https://realmurl"
+//  },
+//  "UserAttributeMappingSettings": {
+//    "userid": "uniqueIdentifier",
+//    "username": "username",
+//    "email": "email",
+//    "realName": "realname",
+//    "group": "memberOf"
+//  },
+//  "UserProvisioningSettings": {
+//    "UserProvisioningEnabled": true,
+//    "UserProvisioningCreateEnabled": true,
+//    "UserProvisioningUpdateEnabled": true,
+//    "DefaultSsoGroupMapping": [
+//      {
+//        "ClientId": "",
+//        "Groups": [
+//          ""
+//        ]
+//      }
+//    ]
+//  },
+//  "ClaimTransformationSettings": {
+//    "StripDomainFromUserName": false
+//  }
+//}

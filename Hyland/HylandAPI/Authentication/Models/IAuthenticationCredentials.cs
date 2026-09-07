@@ -1,12 +1,14 @@
-﻿namespace HyRest;
+﻿using HyRest.Hyland.IdentityAdministration;
+
+namespace HyRest;
 
 /// <summary>
 /// Base interface for all Identity Service Authentication 
 /// </summary>
 public interface IAuthenticationCredentials
 {
-    string? GrantType { get; set; }
-    string? Scope { get; set; }
+    GrantType GrantType { get; set; }
+    List<Scope> Scopes { get; set; }
     string? ClientId { get; set; }
     string? ClientSecret { get; set; }
     string? Username { get; set; }
