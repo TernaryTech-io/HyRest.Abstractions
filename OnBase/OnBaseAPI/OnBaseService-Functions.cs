@@ -30,7 +30,12 @@ public abstract partial class OnBaseService<TApi> : IOnBaseService
             res = await function(api, token);
             var exception = HandleResponse<TOut>(res, token).WaitAsync(TimeOut).Result;
             if (exception != null)
+            {
+                //TO DO: Reevaluate how to handle errors. it sucks.
                 Logger.LogError((int)res.StatusCode, exception, res.ReasonPhrase ?? "The request failed.");
+                if((int)res.StatusCode != 404 )
+                        throw exception.InnerException ?? exception;
+            }
             if (res.Headers != null && res.Content is HylandBase b)
             {
                 foreach (var h in res.Headers)
@@ -58,7 +63,11 @@ public abstract partial class OnBaseService<TApi> : IOnBaseService
             res = await function(api, token);
             var exception = HandleResponse<IApiResponse>(res, token).WaitAsync(TimeOut).Result;
             if (exception != null)
+            {
                 Logger.LogError((int)res.StatusCode, exception, res.ReasonPhrase ?? "The request failed.");
+                if ((int)res.StatusCode != 404)
+                    throw exception.InnerException ?? exception;
+            }
             break;
         }
     }
