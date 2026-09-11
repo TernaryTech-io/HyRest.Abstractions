@@ -8,7 +8,7 @@ namespace HyRest;
 /// </summary>
 /// <typeparam name="IHylandRestAPI"></typeparam>
 /// <typeparam name="IOnBaseItemService"></typeparam>
-public abstract class OnBaseItemCollectionService<TModule, TItem> : OnBaseRestService, IOnBaseItemCollectionService, IReadOnlyCollection<TItem>
+public abstract class OnBaseItemCollectionService<TModule, TItem> : OnBaseCollectionService<TModule, TItem>, IOnBaseItemCollectionService
     where TModule : class, IOnBaseModule
     where TItem : class, IOnBaseItemService
 {
@@ -17,10 +17,6 @@ public abstract class OnBaseItemCollectionService<TModule, TItem> : OnBaseRestSe
         //GetCollection();
     }
     internal protected new TModule Module => (TModule)base.Module;
-    internal protected List<TItem> _items { get; set; } = new List<TItem>();
-    public int Count => _items.Count;
-    internal protected void Add(TItem item) => _items.Add(item);
-    public bool HasItem(long id) => _items.Any(i => i.Id == id);
     public TItem? this[long id] => Find(id);
     public TItem? this[string identifier] => Find(identifier);
     /// <summary>
@@ -35,16 +31,14 @@ public abstract class OnBaseItemCollectionService<TModule, TItem> : OnBaseRestSe
     /// <param name="Identifier">Can be Id, Name or System Name</param>
     /// <returns></returns>
     public TItem? Find(string identifier)
-     => _items.FirstOrDefault(i => i.Id.ToString() == identifier || i.Name == identifier || i.SystemName == identifier);
-    IEnumerator<TItem> IEnumerable<TItem>.GetEnumerator()
-        => _items.GetEnumerator();
-    public IEnumerator GetEnumerator()
-        => _items.GetEnumerator();
+        => FirstOrDefault(i => i.Id.ToString() == identifier || i.Name == identifier || i.SystemName == identifier);
     protected void AddOrUpdate(TItem item)
     {
-        if (_items.Any(i => i.Id == item.Id))
+        if (Any(i => i.Id == item.Id))
+        {
             _items.RemoveAll(i => i.Id == item.Id);
-        _items.Add(item);
+        }
+        Add(item);
     }
     IOnBaseItemService? IOnBaseItemCollectionService.Find(string identifier)
      => Find(identifier);

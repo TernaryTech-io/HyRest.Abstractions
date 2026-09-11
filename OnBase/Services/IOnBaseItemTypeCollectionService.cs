@@ -1,5 +1,7 @@
 ﻿
 using System.Collections;
+using System.Collections.Concurrent;
+using System.Security.AccessControl;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace HyRest;
@@ -9,20 +11,17 @@ namespace HyRest;
 /// </summary>
 /// <typeparam name="IHylandRestAPI"></typeparam>
 /// <typeparam name="IOnBaseItemTypeService"></typeparam>
-public abstract class OnBaseItemTypeCollectionService<TModule, TItem> : OnBaseRestService, IOnBaseItemTypeCollectionService, IReadOnlyCollection<TItem>
+public abstract class OnBaseItemTypeCollectionService<TModule, TItem> : OnBaseCollectionService<TModule,TItem>, IOnBaseItemTypeCollectionService
     where TModule : class, IOnBaseModule
     where TItem : class, IOnBaseItemTypeService
 {
     private bool _retrieved { get; set; }
-    public OnBaseItemTypeCollectionService(IOnBaseModule module) : base(module)
+    private object _lock = new object();
+    public OnBaseItemTypeCollectionService(TModule module) : base(module)
     {
         //GetCollection();
     }
     internal protected new TModule Module => (TModule)base.Module;
-    internal protected List<TItem> _items { get; set; } = [];
-    public int Count => _items.Count;
-    internal protected void Add(TItem item) => _items.Add(item);
-    public bool HasItem(long id) => _items.Any(i => i.Id == id);
     public TItem? this[long id] => Find(id);
     public TItem? this[string identifier] => Find(identifier);
     /// <summary>
@@ -44,34 +43,22 @@ public abstract class OnBaseItemTypeCollectionService<TModule, TItem> : OnBaseRe
             GetCollection().Wait(Module.App.RequestTimeOut);
             _retrieved = true;            
         }
-        item = _items.FirstOrDefault(i => i.Id.ToString() == identifier || i.Name == identifier || i.SystemName == identifier);
+        item = FirstOrDefault(i => i.Id.ToString() == identifier || i.Name == identifier || i.SystemName == identifier);
         if (item != null)
-            GetDetailedObject(item);
+            GetDetailedObject(item).Wait(Module.App.RequestTimeOut);
         return item;
-    }
-    IEnumerator<TItem> IEnumerable<TItem>.GetEnumerator()
-    {
-        if (!_retrieved)
-        {
-            GetCollection().Wait(Module.App.RequestTimeOut);
-            _retrieved = true;
-        }
-        return _items.GetEnumerator();
-    }
-    public IEnumerator GetEnumerator()
-    {
-        if (_items.Count == 0)
-        {
-            GetCollection().Wait(Module.App.RequestTimeOut);
-            _retrieved = true;
-        }
-        return _items.GetEnumerator();
     }
     protected void AddOrUpdate(TItem item)
     {
-        if(_items.Any(i => i.Id == item.Id))
-            _items.RemoveAll(i => i.Id == item.Id);
-        _items.Add(item);
+        if (Any(i => i.Id == item.Id))
+        {
+            lock (_lock)
+            {
+                _items.RemoveAll(i => i.Id == item.Id);
+            }
+        }
+               
+        Add(item);
     }
     private async Task GetDetailedObject(TItem item)
     {

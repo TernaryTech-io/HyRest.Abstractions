@@ -1,31 +1,37 @@
-﻿using HyRest.Utilities;
-using System.Collections;
+﻿using System.Collections;
 
-namespace HyRest;
+namespace HyRest.OnBase;
 
-public abstract class OnBaseCollectionService<TModule,TItem> : OnBaseRestService, IReadOnlyCollection<TItem>
-    where TModule : class, IOnBaseModule
-    where TItem : class, IOnBaseRestService
+public abstract class ValueCollection<TItem,TModel> : IReadOnlyCollection<TItem>
 {
-    private object _lock = new object();
-    protected List<TItem> _items = [];
-    protected OnBaseCollectionService(TModule module)
-        : base(module)
+    protected object _lock = new object();
+    protected readonly List<TModel> _modelItems;
+    protected List<TItem> _items => GetItems();
+    protected abstract List<TItem> GetItems();
+    protected abstract TModel ToModel(TItem item);
+    protected abstract TItem FromModel(TModel model);
+    protected ValueCollection(IEnumerable<TModel> values)
     {
-
+        _modelItems = values.ToList();
     }
-
     public int Count => _items.Count;
-    protected void Add(TItem item)
+    public TItem? ElementAtOrDefault(int index)
+    {
+        lock(_lock)
+        {
+            return _items.ElementAtOrDefault(index);
+        }        
+    }
+    public TItem ElementAt(int index)
     {
         lock (_lock)
         {
-            _items.Add(item);
+            return _items.ElementAt(index);
         }
     }
-    public TItem? FirstOrDefault(Func<TItem,bool> predicate)
+    public TItem? FirstOrDefault(Func<TItem, bool> predicate)
     {
-        lock(_lock)
+        lock (_lock)
         {
             return _items.FirstOrDefault(predicate);
         }
@@ -86,7 +92,7 @@ public abstract class OnBaseCollectionService<TModule,TItem> : OnBaseRestService
             _items.Sort(comparison);
         }
     }
-    public IEnumerable<IGrouping<TKey,TItem>> GroupBy<TKey>(Func<TItem, TKey> selector)
+    public IEnumerable<IGrouping<TKey, TItem>> GroupBy<TKey>(Func<TItem, TKey> selector)
     {
         lock (_lock)
         {
@@ -99,7 +105,7 @@ public abstract class OnBaseCollectionService<TModule,TItem> : OnBaseRestService
         {
             return _items.DistinctBy(selector);
         }
-        
+
     }
     public TItem[] ToArray()
     {
@@ -114,30 +120,3 @@ public abstract class OnBaseCollectionService<TModule,TItem> : OnBaseRestService
     => GetEnumerator();
 }
 
-public abstract class OnBaseRestService : IOnBaseRestService
-{    
-    protected OnBaseRestService(IOnBaseModule module)
-    {
-        _module = module;
-    }
-    private readonly IOnBaseModule _module;
-    internal protected IHylandClientOptions Options => _module.App.ClientOptions;
-    internal protected virtual IOnBaseModule Module => _module;
-    public virtual string? ToJson()
-        => JsonUtility.Serialize(this);
-}
-
-/// <summary>
-/// Unifies IOnBaseItemService & IOnBaseItemType Service for Cache implementation
-/// </summary>
-public interface IOnBaseIdentifiable : IOnBaseRestService
-{
-    long Id { get; }
-}
-/// <summary>
-/// Base Rest Service interface for Items and Collections
-/// </summary>
-public interface IOnBaseRestService
-{    
-    string? ToJson();
-}
